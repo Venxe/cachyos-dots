@@ -1,2 +1,1 @@
-sed -i 's/output   = "DP-1"/output   = ""/' ~/.config/hypr/hyprland.lua
-sed -i 's/mode     = "2560x1440@165.08Hz"/mode     = "preferred"/' ~/.config/hypr/hyprland.lua
+printf '\nhl.monitor({ output = "DP-1", mode = "2560x1440@165.08Hz", position = "auto", scale = 1, })\n' >> ~/.config/caelestia/hypr-user.lua
