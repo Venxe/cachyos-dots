@@ -9,3 +9,4 @@ comfy-desktop
 lmstudio-bin 
 linux-wallpaperengine-git
 linux-wallpaper-engine-ux
+caelestia-sddm-minimalistv2-git
