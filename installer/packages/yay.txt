@@ -1,0 +1,11 @@
+gnome-network-displays
+kora-icon-theme
+clock-rs-git
+pipes-rs
+rmatrix
+asciiquarium-transparent-git
+upscayl-bin
+comfy-desktop
+lmstudio-bin 
+linux-wallpaperengine-git
+linux-wallpaper-engine-ux
