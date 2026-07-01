@@ -32,6 +32,7 @@ telegram-desktop
 thunderbird
 torbrowser-launcher
 tumbler
+veracrypt
 virt-manager
 wine
 wl-clip-persist
