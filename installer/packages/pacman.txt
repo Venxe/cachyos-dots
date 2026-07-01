@@ -9,6 +9,7 @@ flatseal
 github-desktop
 gst-plugins-bad
 gvfs
+gvfs-mtp
 heroic-games-launcher
 libgsf
 libreoffice-fresh
@@ -23,6 +24,7 @@ prismlauncher
 protonplus
 qalculate-gtk
 qbittorrent
+raw-thumbnailer
 steam
 swayimg
 tailscale
