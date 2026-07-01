@@ -36,4 +36,5 @@ virt-manager
 wine
 wl-clip-persist
 xarchiver
+xpadneo-dkms
 yt-dlp
