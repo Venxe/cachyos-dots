@@ -10,3 +10,4 @@ lmstudio-bin
 pipes-rs
 rmatrix
 upscayl-bin
+vitetris
