@@ -40,11 +40,11 @@ sudo -v || error "Sudo yetkisi alınamadı, kurulum iptal ediliyor."
 # 3. Paket Kurulumları
 # ---------------------------------------------------------
 info "1/3 - Resmi depolardan paketler kuruluyor (pacman)..."
-sudo pacman -S --needed --noconfirm - < "$DIR/installer/packages/pacman.txt" || warn "Bazı pacman paketleri kurulamadı."
+sudo pacman -S --needed - < "$DIR/installer/packages/pacman.txt" || warn "Bazı pacman paketleri kurulamadı."
 
 info "2/3 - AUR paketleri kuruluyor (yay)..."
 if command -v yay &> /dev/null; then
-    yay -S --needed --noconfirm - < "$DIR/installer/packages/yay.txt" || warn "Bazı AUR paketleri kurulamadı."
+    yay -S --needed - < "$DIR/installer/packages/yay.txt" || warn "Bazı AUR paketleri kurulamadı."
 else
     warn "Yay yüklü bulunamadı! AUR paketleri atlanıyor..."
 fi
