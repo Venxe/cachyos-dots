@@ -26,7 +26,7 @@ fi
 USER_HOME="$HOME"
 
 echo -e "${GREEN}=== CachyOS Özelleştirme Kurulumuna Hoş Geldiniz ===${NC}"
-echo "Bu betik paketleri kuracak ve dotfiles (Symlink) / sistem ayarlarını uygulayacaktır."
+echo "Bu betik paketleri kuracak ve dotfiles / sistem ayarlarını uygulayacaktır."
 echo "Aktif Kullanıcı Dizini: $USER_HOME"
 sleep 2
 
@@ -58,9 +58,9 @@ else
 fi
 
 # ---------------------------------------------------------
-# 4. Yapılandırma Dosyalarını (Symlink) Uygulama
+# 4. Yapılandırma Dosyalarını Uygulama
 # ---------------------------------------------------------
-info "Kullanıcı yapılandırma dosyaları (~/.config) Symlink olarak ekleniyor..."
+info "Kullanıcı yapılandırma dosyaları (~/.config) kopyalanıyor..."
 mkdir -p "$USER_HOME/.config"
 
 # .config içindeki her klasör/dosya için döngü oluştur
@@ -68,18 +68,12 @@ for item in "$DIR/.config/"*; do
     if [ -e "$item" ]; then
         target_name=$(basename "$item")
         
-        # Eğer hedefte zaten aynı isimde gerçek bir klasör/dosya varsa (symlink değilse) yedekle
-        if [ -e "$USER_HOME/.config/$target_name" ] && [ ! -L "$USER_HOME/.config/$target_name" ]; then
-            warn "$target_name hedefte zaten var. Mevcut olan yedekleniyor: $target_name.bak"
-            mv "$USER_HOME/.config/$target_name" "$USER_HOME/.config/$target_name.bak"
-        fi
-        
-        # Symlink oluştur (-s: symlink, -f: force/üzerine yaz, -n: sembolik bağları izleme)
-        ln -sfn "$item" "$USER_HOME/.config/$target_name"
-        echo -e "  -> Symlink oluşturuldu: .config/$target_name"
+        # Dosyaları/klasörleri üzerine yazarak kopyala (kaynak symlink'leri koruyarak)
+        cp -af "$item" "$USER_HOME/.config/"
+        echo -e "  -> Kopyalandı: .config/$target_name"
     fi
 done
-success "Kullanıcı yapılandırmaları başarıyla symlink edildi."
+success "Kullanıcı yapılandırmaları başarıyla kopyalandı."
 
 # ---------------------------------------------------------
 # 5. Sistem Dosyalarını (/etc) Uygulama
