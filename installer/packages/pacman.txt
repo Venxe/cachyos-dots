@@ -29,6 +29,7 @@ steam
 swayimg
 tailscale
 telegram-desktop
+thunar-archive-plugin
 thunderbird
 torbrowser-launcher
 tumbler
@@ -38,4 +39,5 @@ wine
 wl-clip-persist
 xarchiver
 xpadneo-dkms
+yazi
 yt-dlp
