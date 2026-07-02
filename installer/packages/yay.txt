@@ -8,7 +8,6 @@ linux-wallpaper-engine-ux
 linux-wallpaperengine-git
 lmstudio-bin
 pipes-rs
-raw-thumbnailer
 rmatrix
 upscayl-bin
 vitetris
