@@ -24,7 +24,6 @@ prismlauncher
 protonplus
 qalculate-gtk
 qbittorrent
-raw-thumbnailer
 steam
 swayimg
 tailscale
