@@ -1,4 +1,4 @@
-[![sayimburak's Dotfiles](https://raw.githubusercontent.com/Venxe/Dotfiles/refs/heads/main/banner.jpg)
+![sayimburak's Dotfiles](https://github.com/Venxe/cachyos-dots/blob/main/assets/banner.jpg)
 
 This repository contains a quick-install setup of my custom configuration and the packages I use, built on top of the [caelestia-dots](https://github.com/caelestia-dots/caelestia) project.
 
