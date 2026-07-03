@@ -70,6 +70,9 @@ apply_configurations() {
         sudo cp -a "$DIR/etc/." /etc/
         success "System-wide (/etc) configurations applied."
     fi
+
+    info "Setting GTK icon theme to kora..."
+    gsettings set org.gnome.desktop.interface icon-theme "kora"
 }
 
 execute_subscripts() {
