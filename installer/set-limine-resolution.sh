@@ -13,6 +13,6 @@ if grep -q "^interface_resolution:" "$CONF"; then
     sed -i "s/^interface_resolution:.*/$ENTRY/" "$CONF"
     echo "Updated: $ENTRY"
 else
-    sed -i "1s/^/$ENTRY\n/" "$CONF"
+    sed -i "1i $ENTRY" "$CONF"
     echo "Inserted: $ENTRY"
 fi

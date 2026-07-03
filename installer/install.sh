@@ -1,114 +1,108 @@
 #!/usr/bin/env bash
 
-# ---------------------------------------------------------
-# 1. Renkler ve Yardımcı Fonksiyonlar
-# ---------------------------------------------------------
-GREEN='\033[0;32m'
-BLUE='\033[0;34m'
-YELLOW='\033[1;33m'
-RED='\033[0;31m'
-NC='\033[0m' # No Color
+clear
 
-info() { echo -e "${BLUE}[BİLGİ]${NC} $1"; }
-success() { echo -e "${GREEN}[BAŞARILI]${NC} $1"; }
-warn() { echo -e "${YELLOW}[UYARI]${NC} $1"; }
-error() { echo -e "${RED}[HATA]${NC} $1"; exit 1; }
+# --- BASH STRICT MODE & ERROR HANDLING ---
+set -euo pipefail
+trap 'error "Failed at line $LINENO: $BASH_COMMAND\nInstallation aborted!"' ERR
 
-# Betiğin çalıştığı ana dizini bul (Nereden çalıştırılırsa çalıştırılsın dinamik yollar çalışır)
-DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+# --- CONSTANTS ---
+readonly GREEN='\033[0;32m'
+readonly BLUE='\033[0;34m'
+readonly YELLOW='\033[1;33m'
+readonly RED='\033[0;31m'
+readonly NC='\033[0m'
 
-# Root olarak çalıştırılmasını engelle (Çünkü yay ve $HOME ayarları bozulur)
-if [[ $EUID -eq 0 ]]; then
-    error "Bu betiği root (sudo ./install.sh) olarak ÇALIŞTIRMAYIN!\nLütfen normal kullanıcı olarak çalıştırın, gerektiğinde şifre sorulacaktır."
-fi
+readonly DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+readonly PACKAGES_DIR="$DIR/installer/packages"
+readonly SCRIPTS_DIR="$DIR/installer"
 
-# Aktif kullanıcının dizinini dinamik olarak al
-USER_HOME="$HOME"
+# --- HELPER FUNCTIONS ---
+info() { echo -e "${BLUE}[INFO]${NC} $1"; }
+success() { echo -e "${GREEN}[SUCCESS]${NC} $1"; }
+error() { echo -e "${RED}[ERROR]${NC} $1"; exit 1; }
 
-echo -e "${GREEN}=== CachyOS Özelleştirme Kurulumuna Hoş Geldiniz ===${NC}"
-echo "Bu betik paketleri kuracak ve dotfiles / sistem ayarlarını uygulayacaktır."
-echo "Aktif Kullanıcı Dizini: $USER_HOME"
-sleep 2
+# --- CORE FUNCTIONS ---
+print_banner() {
+    echo -e "\e[36m"
+    cat << "EOF"
 
-# ---------------------------------------------------------
-# 2. Yetki Kontrolü
-# ---------------------------------------------------------
-info "Sistem genelinde değişiklikler için root yetkisine ihtiyaç var."
-sudo -v || error "Sudo yetkisi alınamadı, kurulum iptal ediliyor."
+┌─┐┌─┐┬ ┬┬┌┬┐┌┐ ┬ ┬┬─┐┌─┐┬┌─ ┐┌─┐  ╔╦╗┌─┐┌┬┐┌─┐┬┬  ┌─┐┌─┐
+└─┐├─┤└┬┘││││├┴┐│ │├┬┘├─┤├┴┐  └─┐   ║║│ │ │ ├┤ ││  ├┤ └─┐
+└─┘┴ ┴ ┴ ┴┴ ┴└─┘└─┘┴└─┴ ┴┴ ┴  └─┘  ═╩╝└─┘ ┴ └  ┴┴─┘└─┘└─┘
 
-# ---------------------------------------------------------
-# 3. Paket Kurulumları
-# ---------------------------------------------------------
-info "1/3 - Resmi depolardan paketler kuruluyor (pacman)..."
-sudo pacman -S --needed - < "$DIR/installer/packages/pacman.txt" || warn "Bazı pacman paketleri kurulamadı."
+EOF
+    echo -e "\e[0m"
+    echo -e "${GREEN}=== Welcome to the CachyOS Customization Installer ===${NC}"
+    echo "This script will install packages and apply dotfiles/system configurations."
+    echo "Active User Directory: $HOME"
+}
 
-info "2/3 - AUR paketleri kuruluyor (yay)..."
-if command -v yay &> /dev/null; then
-    yay -S --needed - < "$DIR/installer/packages/yay.txt" || warn "Bazı AUR paketleri kurulamadı."
-else
-    warn "Yay yüklü bulunamadı! AUR paketleri atlanıyor..."
-fi
-
-info "3/3 - Flatpak paketleri kuruluyor..."
-if command -v flatpak &> /dev/null; then
-    flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-    flatpak install -y flathub $(cat "$DIR/installer/packages/flatpak.txt") || warn "Bazı flatpak paketleri kurulamadı."
-else
-    warn "Flatpak kurulu değil, bu adım atlanıyor."
-fi
-
-# ---------------------------------------------------------
-# 4. Yapılandırma Dosyalarını Uygulama
-# ---------------------------------------------------------
-info "Kullanıcı yapılandırma dosyaları (~/.config) kopyalanıyor..."
-mkdir -p "$USER_HOME/.config"
-
-# .config içindeki her klasör/dosya için döngü oluştur
-for item in "$DIR/.config/"*; do
-    if [ -e "$item" ]; then
-        target_name=$(basename "$item")
-        
-        # Dosyaları/klasörleri üzerine yazarak kopyala (kaynak symlink'leri koruyarak)
-        cp -af "$item" "$USER_HOME/.config/"
-        echo -e "  -> Kopyalandı: .config/$target_name"
+check_privileges() {
+    if [[ $EUID -eq 0 ]]; then
+        error "DO NOT run this script as root (sudo ./install.sh)!\nPlease run it as a normal user; you will be prompted for a password when necessary."
     fi
-done
-success "Kullanıcı yapılandırmaları başarıyla kopyalandı."
+    info "Root privileges are required for system-wide modifications."
+    sudo -v
+}
 
-# ---------------------------------------------------------
-# 5. Sistem Dosyalarını (/etc) Uygulama
-# ---------------------------------------------------------
-# NOT: /etc dizini root yetkisi gerektirir. Güvenlik ve yetki sorunlarından kaçınmak için
-#      /etc altındaki dosyalar symlink YAPILMAMALIDIR, cp komutu ile normal kopyalanır.
-info "Sistem yapılandırma dosyaları (/etc) kopyalanıyor..."
-if [ -d "$DIR/etc" ] && [ "$(ls -A "$DIR/etc")" ]; then
-    sudo cp -r "$DIR/etc/"* /etc/
-    success "Sistem geneli (/etc) yapılandırmaları uygulandı."
-else
-    info "/etc dizininde uygulanacak ayar bulunamadı."
-fi
+install_packages() {
+    info "1/3 - Installing packages from official repositories (pacman)..."
+    xargs -a "$PACKAGES_DIR/pacman.txt" -r sudo pacman -S --needed
 
-# ---------------------------------------------------------
-# 6. Alt Betikleri (Sub-scripts) Çalıştırma
-# ---------------------------------------------------------
-info "Özel yapılandırma betikleri çalıştırılıyor..."
+    info "2/3 - Installing AUR packages (yay)..."
+    command -v yay >/dev/null 2>&1 || error "Yay is required but not installed!"
+    xargs -a "$PACKAGES_DIR/yay.txt" -r yay -S --needed
 
-if [ -f "$DIR/installer/setup-libvirt.sh" ]; then
-    info "-> Libvirt yapılandırılıyor..."
-    sudo bash "$DIR/installer/setup-libvirt.sh"
-fi
+    info "3/3 - Installing Flatpak packages..."
+    flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+    xargs -a "$PACKAGES_DIR/flatpak.txt" -r flatpak install -y flathub
+}
 
-if [ -f "$DIR/installer/set-limine-resolution.sh" ]; then
-    info "-> Limine bootloader çözünürlüğü ayarlanıyor..."
-    sudo bash "$DIR/installer/set-limine-resolution.sh"
-fi
+apply_configurations() {
+    info "Copying user configuration files (~/.config)..."
+    mkdir -p "$HOME/.config"
+    cp -af "$DIR/.config/." "$HOME/.config/"
+    success "User configurations successfully copied."
 
-# ---------------------------------------------------------
-# 7. Son İşlemler & Servisler
-# ---------------------------------------------------------
-info "Gerekli servisler etkinleştiriliyor..."
-sudo systemctl daemon-reload
-sudo systemctl enable --now tailscaled.service 2>/dev/null || true
+    info "Copying system configuration files (/etc)..."
+    if [[ -d "$DIR/etc" ]]; then
+        sudo cp -a "$DIR/etc/." /etc/
+        success "System-wide (/etc) configurations applied."
+    fi
+}
 
-success "Kurulum başarıyla tamamlandı!"
-echo -e "${YELLOW}Değişikliklerin tam anlamıyla etkili olması için bilgisayarınızı yeniden başlatmanız tavsiye edilir.${NC}"
+execute_subscripts() {
+    info "Executing custom configuration scripts..."
+    
+    if [[ -f "$SCRIPTS_DIR/setup-libvirt.sh" ]]; then
+        info "-> Configuring Libvirt..."
+        sudo bash "$SCRIPTS_DIR/setup-libvirt.sh"
+    fi
+
+    if [[ -f "$SCRIPTS_DIR/set-limine-resolution.sh" ]]; then
+        info "-> Setting Limine bootloader resolution..."
+        sudo bash "$SCRIPTS_DIR/set-limine-resolution.sh"
+    fi
+}
+
+enable_services() {
+    info "Enabling required services..."
+    sudo systemctl daemon-reload
+    sudo systemctl enable --now tailscaled.service
+}
+
+# --- MAIN EXECUTION ---
+main() {
+    print_banner
+    check_privileges
+    install_packages
+    apply_configurations
+    execute_subscripts
+    enable_services
+    
+    success "Installation completed successfully!"
+    echo -e "${YELLOW}It is recommended to reboot your computer for the changes to take full effect.${NC}"
+}
+
+main "$@"
