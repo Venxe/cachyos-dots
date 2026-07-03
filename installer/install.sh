@@ -71,8 +71,10 @@ apply_configurations() {
         success "System-wide (/etc) configurations applied."
     fi
 
-    info "Setting GTK icon theme to kora..."
+    info "Setting GTK icon and cursor themes..."
     gsettings set org.gnome.desktop.interface icon-theme "kora"
+    gsettings set org.gnome.desktop.interface cursor-theme "Qogir-Dark"
+    gsettings set org.gnome.desktop.interface cursor-size 21
 }
 
 execute_subscripts() {
