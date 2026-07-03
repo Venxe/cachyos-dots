@@ -101,6 +101,10 @@ main() {
     execute_subscripts
     enable_services
     
+    info "Cleaning up installation directory..."
+    cd "$HOME" || true
+    rm -rf "$DIR"
+    
     success "Installation completed successfully!"
     echo -e "${YELLOW}It is recommended to reboot your computer for the changes to take full effect.${NC}"
 }
