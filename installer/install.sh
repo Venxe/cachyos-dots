@@ -74,7 +74,7 @@ apply_configurations() {
     info "Setting GTK icon and cursor themes..."
     gsettings set org.gnome.desktop.interface icon-theme "kora"
     gsettings set org.gnome.desktop.interface cursor-theme "Qogir-Dark"
-    gsettings set org.gnome.desktop.interface cursor-size 23
+    gsettings set org.gnome.desktop.interface cursor-size 24
 }
 
 execute_subscripts() {
