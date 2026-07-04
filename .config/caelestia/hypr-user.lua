@@ -13,7 +13,6 @@ hl.config({
     input = {
         kb_layout = "tr",
     },
-    windowrulev2 = {
-        "workspace special:communication silent, class:^(equibop)$",
-    }
 })
+
+hl.window_rule({ match = { class = "(?i)equibop" }, workspace = "special:communication silent" })
