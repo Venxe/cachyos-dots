@@ -2,6 +2,7 @@ hl.on("hyprland.start", function()
     hl.exec_cmd("wl-clip-persist --clipboard regular")
     hl.exec_cmd("equibop")
     hl.exec_cmd("steam -silent")
+    hl.exec_cmd("easyeffects --gapplication-service")
 end)
 
 hl.monitor({ output = "DP-1", mode = "2560x1440@165.08Hz", position = "auto", scale = 1, })
