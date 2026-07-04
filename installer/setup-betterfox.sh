@@ -2,7 +2,7 @@
 set -euo pipefail
 
 readonly BETTERFOX_URL="https://raw.githubusercontent.com/yokoffing/Betterfox/main/user.js"
-readonly FIREFOX_DIR="$HOME/.mozilla/firefox"
+readonly FIREFOX_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/mozilla/firefox"
 readonly CAELESTIA_PREF='user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);'
 
 find_profile() {
