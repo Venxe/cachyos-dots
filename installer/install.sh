@@ -3,7 +3,7 @@
 clear
 
 # --- BASH STRICT MODE & ERROR HANDLING ---
-set -euo pipefail
+set -Eeuo pipefail
 trap 'error "Failed at line $LINENO: $BASH_COMMAND\nInstallation aborted!"' ERR
 
 # --- CONSTANTS ---
@@ -61,8 +61,7 @@ install_packages() {
 
 apply_configurations() {
     info "Copying user configuration files (~/.config)..."
-    mkdir -p "$HOME/.config"
-    cp -af "$DIR/.config/." "$HOME/.config/"
+    rsync -aK "$DIR/.config/" "$HOME/.config/"
     success "User configurations successfully copied."
 
     info "Copying system configuration files (/etc)..."

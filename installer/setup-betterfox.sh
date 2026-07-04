@@ -24,7 +24,7 @@ find_profile() {
   echo "$FIREFOX_DIR/$path"
 }
 
-profile=$(find_profile) || { echo "Firefox profile not found. Launch Firefox at least once first."; exit 1; }
+profile=$(find_profile) || { echo -e "\033[0;31m[ERROR]\033[0m Firefox profile not found. Launch Firefox at least once first."; exit 1; }
 target="$profile/user.js"
 
 
