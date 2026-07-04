@@ -89,6 +89,11 @@ execute_subscripts() {
         info "-> Setting Limine bootloader resolution..."
         sudo bash "$SCRIPTS_DIR/set-limine-resolution.sh"
     fi
+
+    if [[ -f "$SCRIPTS_DIR/patch-desktop-entries.sh" ]]; then
+        info "-> Patching desktop entries..."
+        sudo bash "$SCRIPTS_DIR/patch-desktop-entries.sh"
+    fi
 }
 
 enable_services() {
