@@ -6,12 +6,22 @@ readonly FIREFOX_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/mozilla/firefox"
 readonly CAELESTIA_PREF='user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);'
 
 find_profile() {
-  local dir
-  for pattern in "*.default-release" "*.default"; do
-    dir=$(find "$FIREFOX_DIR" -maxdepth 1 -type d -name "$pattern" -print -quit 2>/dev/null)
-    [[ -n "$dir" ]] && echo "$dir" && return 0
-  done
-  return 1
+  local ini="$FIREFOX_DIR/profiles.ini"
+  [[ ! -f "$ini" ]] && return 1
+
+  local path
+  path=$(awk -F= '/^\[Install/{s=1} s && /^Default=/{print $2; exit}' "$ini")
+
+  if [[ -z "$path" ]]; then
+    path=$(awk -F= '
+      /^\[Profile/{s=1; p=""}
+      s && /^Path=/{p=$2}
+      s && /^Default=1/{if(p) {print p; exit}}
+    ' "$ini")
+  fi
+
+  [[ -z "$path" ]] && return 1
+  echo "$FIREFOX_DIR/$path"
 }
 
 profile=$(find_profile) || { echo "Firefox profile not found. Launch Firefox at least once first."; exit 1; }
