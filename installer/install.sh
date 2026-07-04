@@ -94,6 +94,11 @@ execute_subscripts() {
         info "-> Patching desktop entries..."
         sudo bash "$SCRIPTS_DIR/patch-desktop-entries.sh"
     fi
+
+    if [[ -f "$SCRIPTS_DIR/setup-betterfox.sh" ]]; then
+        info "-> Installing BetterFox user.js..."
+        bash "$SCRIPTS_DIR/setup-betterfox.sh"
+    fi
 }
 
 enable_services() {
