@@ -10,6 +10,7 @@ github-desktop
 gst-plugins-bad
 gvfs
 gvfs-mtp
+gvfs-smb
 heroic-games-launcher
 libgsf
 libreoffice-fresh
