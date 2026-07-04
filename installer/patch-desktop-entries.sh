@@ -19,6 +19,7 @@ hidden_list=(
   "/usr/share/applications/winetricks.desktop"
   "/usr/share/applications/xfce4-about.desktop"
   "/usr/share/applications/org.torproject.torbrowser-launcher.settings.desktop"
+  "/usr/share/applications/uuctl.desktop"
 )
 
 update_exec() {
