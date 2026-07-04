@@ -1,3 +1,4 @@
+antigravity-ide
 asciiquarium-transparent-git
 caelestia-sddm-minimalistv2-git
 clock-rs-git
