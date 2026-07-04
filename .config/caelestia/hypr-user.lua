@@ -1,6 +1,6 @@
 hl.on("hyprland.start", function()
     hl.exec_cmd("wl-clip-persist --clipboard regular")
-    hl.exec_cmd("equibop --start-minimized")
+    hl.exec_cmd("equibop")
     hl.exec_cmd("steam -silent")
 end)
 
@@ -13,4 +13,7 @@ hl.config({
     input = {
         kb_layout = "tr",
     },
+    windowrulev2 = {
+        "workspace special:communication silent, class:^(equibop)$",
+    }
 })
