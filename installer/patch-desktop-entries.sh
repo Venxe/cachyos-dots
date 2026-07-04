@@ -7,6 +7,7 @@ readonly DESKTOP_DIRS=(
 )
 
 declare -A exec_map=(
+  ["vitetris"]="vitetris"
 )
 
 hidden_list=(
