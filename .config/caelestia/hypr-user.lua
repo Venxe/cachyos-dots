@@ -17,5 +17,5 @@ hl.config({
 })
 
 hl.window_rule({ match = { class = "(?i)equibop" }, workspace = "special:communication silent" })
-hl.window_rule({ match = { class = "(?i)localsend" }, float = true, size = "300 600" })
+hl.window_rule({ match = { class = "(?i)localsend" }, float = true, size = "400 600" })
 hl.window_rule({ match = { class = "(?i)qalculate-gtk" }, float = true })
