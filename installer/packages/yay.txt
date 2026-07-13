@@ -10,5 +10,6 @@ linux-wallpaperengine-git
 lmstudio-bin
 pipes-rs
 rmatrix
+rustdesk-bin
 upscayl-bin
 vitetris
