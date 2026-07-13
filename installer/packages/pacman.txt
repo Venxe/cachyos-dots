@@ -1,5 +1,4 @@
 7zip
-bitwarden
 calf
 darktable
 easyeffects
