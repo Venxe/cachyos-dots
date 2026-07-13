@@ -21,6 +21,7 @@ mpv
 obs-studio
 obsidian
 prismlauncher
+proton-pass
 protonplus
 qalculate-gtk
 qbittorrent
