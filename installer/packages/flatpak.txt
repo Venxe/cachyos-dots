@@ -1,2 +1,1 @@
-com.rustdesk.RustDesk
 io.github.flattool.Warehouse
