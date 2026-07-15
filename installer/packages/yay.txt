@@ -4,6 +4,7 @@ caelestia-sddm-minimalistv2-git
 clock-rs-git
 comfy-desktop
 gnome-network-displays
+hyprshade
 kora-icon-theme
 linux-wallpaper-engine-ux
 linux-wallpaperengine-git
