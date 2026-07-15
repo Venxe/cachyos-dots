@@ -46,3 +46,13 @@ My Marketplace Items:
 - **Extensions:** Full Screen, Scanabbles
 - **Snippets:** Hover Panels, Rounded Images, Auto-hide Friends, Pretty Lyrics, Smooth Progress/Volume Bar, Modern ScrollBar, Remove the Artist and Credits sections from the Sidebar
 </details>
+
+<details>
+<summary>NVIDIA GPU workspace animation stuttering fix.</summary>
+
+```bash
+sudo nvidia-smi -lgc 450,3135 && printf '[Unit]\nDescription=Set NVIDIA minimum GPU clock to prevent animation stutter\nAfter=graphical.target\n\n[Service]\nType=oneshot\nExecStart=/usr/bin/nvidia-smi -lgc 450,3135\n\n[Install]\nWantedBy=graphical.target\n' | sudo tee /etc/systemd/system/nvidia-clock-fix.service && sudo systemctl enable --now nvidia-clock-fix.service
+```
+
+> **Note:** The clock values (`450,3135`) are specific to the RTX 4070. Adjust for your GPU using `nvidia-smi -q -d supported_clocks`.
+</details>
