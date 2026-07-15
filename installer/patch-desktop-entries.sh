@@ -38,7 +38,7 @@ update_exec() {
   local file=$1 cmd=$2
   [[ ! -f "$file" ]] && return 0
   sed -i -e '/^\[Desktop Entry\]/,/^\[/{/^Exec=/d; /^Terminal=/d}' \
-         -e '/^\[Desktop Entry\]/a Exec='"$cmd"'\nTerminal=false' "$file"
+         -e '/^\[Desktop Entry\]/a Exec='"$cmd"'\nTerminal=true' "$file"
 }
 
 hide_entry() {
