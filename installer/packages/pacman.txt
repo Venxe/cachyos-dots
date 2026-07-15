@@ -35,7 +35,6 @@ torbrowser-launcher
 tumbler
 veracrypt
 virt-manager
-wine
 wl-clip-persist
 file-roller
 xpadneo-dkms
