@@ -76,7 +76,7 @@ apply_configurations() {
     gsettings set org.gnome.desktop.interface cursor-size 24
 
     info "Setting RTC to local time (dual-boot Windows compatibility)..."
-    timedatectl set-local-rtc 1 --adjust-system-clock
+    sudo timedatectl set-local-rtc 1 --adjust-system-clock
 }
 
 execute_subscripts() {
