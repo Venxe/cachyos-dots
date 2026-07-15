@@ -74,6 +74,9 @@ apply_configurations() {
     gsettings set org.gnome.desktop.interface icon-theme "kora"
     gsettings set org.gnome.desktop.interface cursor-theme "Qogir-Dark"
     gsettings set org.gnome.desktop.interface cursor-size 24
+
+    info "Setting RTC to local time (dual-boot Windows compatibility)..."
+    timedatectl set-local-rtc 1 --adjust-system-clock
 }
 
 execute_subscripts() {
@@ -97,6 +100,11 @@ execute_subscripts() {
     if [[ -f "$SCRIPTS_DIR/setup-betterfox.sh" ]]; then
         info "-> Installing BetterFox user.js..."
         bash "$SCRIPTS_DIR/setup-betterfox.sh"
+    fi
+
+    if [[ -f "$SCRIPTS_DIR/setup-snapper.sh" ]]; then
+        info "-> Configuring Snapper snapshot limits..."
+        sudo bash "$SCRIPTS_DIR/setup-snapper.sh"
     fi
 }
 
