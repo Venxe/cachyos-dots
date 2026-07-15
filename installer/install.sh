@@ -76,7 +76,9 @@ apply_configurations() {
     gsettings set org.gnome.desktop.interface cursor-size 24
 
     info "Setting RTC to local time (dual-boot Windows compatibility)..."
-    sudo timedatectl set-local-rtc 1 --adjust-system-clock || sudo hwclock --systohc --localtime || echo -e "\e[33m[WARNING]\e[0m Failed to set RTC. Skipping..."
+    # Bypass systemd-timedated Polkit/D-Bus bugs in Wayland by natively configuring /etc/adjtime
+    sudo sh -c 'printf "0.0 0 0.0\n0\nLOCAL\n" > /etc/adjtime'
+    sudo hwclock --systohc --localtime 2>/dev/null || echo -e "\e[33m[WARNING]\e[0m Failed to sync hardware clock. Skipping..."
 }
 
 execute_subscripts() {
