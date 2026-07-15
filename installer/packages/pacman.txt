@@ -37,7 +37,7 @@ veracrypt
 virt-manager
 wine
 wl-clip-persist
-xarchiver
+file-roller
 xpadneo-dkms
 yazi
 yt-dlp

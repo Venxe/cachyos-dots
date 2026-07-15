@@ -19,3 +19,4 @@ hl.config({
 hl.window_rule({ match = { class = "(?i)equibop" }, workspace = "special:communication silent" })
 hl.window_rule({ match = { class = "(?i)localsend" }, float = true, size = "400 600" })
 hl.window_rule({ match = { class = "(?i)qalculate-gtk" }, float = true })
+hl.window_rule({ match = { class = "(?i)(file-roller|org\\.gnome\\.FileRoller)" }, float = true, size = "800 600" })
