@@ -106,6 +106,16 @@ execute_subscripts() {
         info "-> Configuring Snapper snapshot limits..."
         sudo bash "$SCRIPTS_DIR/setup-snapper.sh"
     fi
+
+    if [[ -f "$SCRIPTS_DIR/setup-equibop.sh" ]]; then
+        info "-> Patching Equibop transparency settings..."
+        bash "$SCRIPTS_DIR/setup-equibop.sh"
+    fi
+
+    if [[ -f "$SCRIPTS_DIR/setup-caelestia-icons.sh" ]]; then
+        info "-> Patching Caelestia theme engine to persist 'kora' icons..."
+        bash "$SCRIPTS_DIR/setup-caelestia-icons.sh"
+    fi
 }
 
 enable_services() {
