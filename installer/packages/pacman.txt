@@ -36,7 +36,7 @@ tumbler
 veracrypt
 virt-manager
 wl-clip-persist
-file-roller
+xarchiver
 xpadneo-dkms
 yazi
 yt-dlp
