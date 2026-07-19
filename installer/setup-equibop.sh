@@ -50,12 +50,13 @@ chmod +x "$HOOK_SCRIPT"
 
 CLI_JSON="$HOME/.config/caelestia/cli.json"
 mkdir -p "$(dirname "$CLI_JSON")"
+POST_HOOK_SCRIPT="$HOME/.config/caelestia/post-hook.sh"
 if [[ ! -f "$CLI_JSON" ]]; then
-    echo '{"theme": {"postHook": "'"$HOOK_SCRIPT"'"}}' > "$CLI_JSON"
+    echo '{"theme": {"postHook": "'"$POST_HOOK_SCRIPT"'"}}' > "$CLI_JSON"
 else
     # Update existing JSON with jq
     if command -v jq >/dev/null 2>&1; then
-        jq '.theme.postHook = "'"$HOOK_SCRIPT"'"' "$CLI_JSON" > "${CLI_JSON}.tmp" && mv "${CLI_JSON}.tmp" "$CLI_JSON"
+        jq '.theme.postHook = "'"$POST_HOOK_SCRIPT"'"' "$CLI_JSON" > "${CLI_JSON}.tmp" && mv "${CLI_JSON}.tmp" "$CLI_JSON"
     fi
 fi
 echo "Set: Caelestia postHook applied to survive wallpaper changes."
