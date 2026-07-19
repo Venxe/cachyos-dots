@@ -75,6 +75,10 @@ apply_configurations() {
     gsettings set org.gnome.desktop.interface cursor-theme "Qogir-Dark"
     gsettings set org.gnome.desktop.interface cursor-size 24
 
+    info "Setting profile picture..."
+    cp "$DIR/assets/.face" "$HOME/.face"
+    success "Profile picture successfully copied."
+
     info "Setting RTC to local time (dual-boot Windows compatibility)..."
     sudo sh -c 'printf "0.0 0 0.0\n0\nLOCAL\n" > /etc/adjtime'
     sudo hwclock --systohc --localtime
