@@ -77,6 +77,8 @@ apply_configurations() {
 
     info "Setting profile picture..."
     cp "$DIR/assets/.face" "$HOME/.face"
+    sudo mkdir -p /usr/share/sddm/faces
+    sudo cp "$DIR/assets/.face" "/usr/share/sddm/faces/$USER.face.icon"
     success "Profile picture successfully copied."
 
     info "Setting RTC to local time (dual-boot Windows compatibility)..."
