@@ -83,6 +83,12 @@ apply_configurations() {
 execute_subscripts() {
     info "Executing custom configuration scripts..."
     
+
+    if [[ -f "$SCRIPTS_DIR/setup-snapper.sh" ]]; then
+        info "-> Configuring Snapper snapshot limits..."
+        sudo bash "$SCRIPTS_DIR/setup-snapper.sh"
+    fi
+
     if [[ -f "$SCRIPTS_DIR/setup-libvirt.sh" ]]; then
         info "-> Configuring Libvirt..."
         sudo bash "$SCRIPTS_DIR/setup-libvirt.sh"
@@ -93,24 +99,21 @@ execute_subscripts() {
         sudo bash "$SCRIPTS_DIR/set-limine-resolution.sh"
     fi
 
-    if [[ -f "$SCRIPTS_DIR/patch-desktop-entries.sh" ]]; then
-        info "-> Patching desktop entries..."
-        sudo bash "$SCRIPTS_DIR/patch-desktop-entries.sh"
-    fi
 
     if [[ -f "$SCRIPTS_DIR/setup-betterfox.sh" ]]; then
         info "-> Installing BetterFox user.js..."
         bash "$SCRIPTS_DIR/setup-betterfox.sh"
     fi
 
-    if [[ -f "$SCRIPTS_DIR/setup-snapper.sh" ]]; then
-        info "-> Configuring Snapper snapshot limits..."
-        sudo bash "$SCRIPTS_DIR/setup-snapper.sh"
-    fi
-
     if [[ -f "$SCRIPTS_DIR/setup-equibop.sh" ]]; then
         info "-> Patching Equibop transparency settings..."
         bash "$SCRIPTS_DIR/setup-equibop.sh"
+    fi
+
+
+    if [[ -f "$SCRIPTS_DIR/patch-desktop-entries.sh" ]]; then
+        info "-> Patching desktop entries..."
+        sudo bash "$SCRIPTS_DIR/patch-desktop-entries.sh"
     fi
 
     if [[ -f "$SCRIPTS_DIR/setup-caelestia-icons.sh" ]]; then
