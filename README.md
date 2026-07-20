@@ -11,7 +11,7 @@ The installation process is fully automated and specifically tailored to my pers
 🖥️ **Display Manager:** SDDM
 
 > [!WARNING]
-> Running this setup may install software and configurations that could conflict with your preferences. You may want to review the [packages](https://github.com/Venxe/Dotfiles/tree/main/installers) before proceeding.
+> Running this setup may install software and configurations that could conflict with your preferences. You may want to review the [packages](https://github.com/sayimburak/dotfiles/tree/main/installer/packages) before proceeding.
 
 
 ## ⚙️ Installation
@@ -43,7 +43,7 @@ spicetify backup apply
 ```
 
 My Marketplace Items:
-- **Extensions:** Full Screen, Scanabbles
+- **Extensions:** Full Screen, Scannables
 - **Snippets:** Hover Panels, Rounded Images, Auto-hide Friends, Pretty Lyrics, Smooth Progress/Volume Bar, Modern ScrollBar, Remove the Artist and Credits sections from the Sidebar
 </details>
 
