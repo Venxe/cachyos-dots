@@ -34,7 +34,7 @@ You can view your connected monitors and their properties by running the `hyprct
 </details>
 
 <details>
-<summary>After signing in to Spotify, you must configure a few settings for applying Spicetify.</summary>
+<summary>After signing in to Spotify, you need to run the following commands to apply Spicetify.</summary>
 
 ```
 sudo chmod a+wr /opt/spotify
