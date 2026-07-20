@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# scripts/set-limine-resolution.sh
+# scripts/limine-resolution.sh
 
 set -euo pipefail
 

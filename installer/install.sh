@@ -90,41 +90,41 @@ execute_subscripts() {
     info "Executing custom configuration scripts..."
     
 
-    if [[ -f "$SCRIPTS_DIR/setup-snapper.sh" ]]; then
+    if [[ -f "$SCRIPTS_DIR/snapper.sh" ]]; then
         info "-> Configuring Snapper snapshot limits..."
-        sudo bash "$SCRIPTS_DIR/setup-snapper.sh"
+        sudo bash "$SCRIPTS_DIR/snapper.sh"
     fi
 
-    if [[ -f "$SCRIPTS_DIR/setup-libvirt.sh" ]]; then
+    if [[ -f "$SCRIPTS_DIR/libvirt.sh" ]]; then
         info "-> Configuring Libvirt..."
-        sudo bash "$SCRIPTS_DIR/setup-libvirt.sh"
+        sudo bash "$SCRIPTS_DIR/libvirt.sh"
     fi
 
-    if [[ -f "$SCRIPTS_DIR/set-limine-resolution.sh" ]]; then
+    if [[ -f "$SCRIPTS_DIR/limine-resolution.sh" ]]; then
         info "-> Setting Limine bootloader resolution..."
-        sudo bash "$SCRIPTS_DIR/set-limine-resolution.sh"
+        sudo bash "$SCRIPTS_DIR/limine-resolution.sh"
     fi
 
 
-    if [[ -f "$SCRIPTS_DIR/setup-betterfox.sh" ]]; then
+    if [[ -f "$SCRIPTS_DIR/betterfox.sh" ]]; then
         info "-> Installing BetterFox user.js..."
-        bash "$SCRIPTS_DIR/setup-betterfox.sh"
+        bash "$SCRIPTS_DIR/betterfox.sh"
     fi
 
-    if [[ -f "$SCRIPTS_DIR/setup-equibop.sh" ]]; then
+    if [[ -f "$SCRIPTS_DIR/equibop.sh" ]]; then
         info "-> Patching Equibop transparency settings..."
-        bash "$SCRIPTS_DIR/setup-equibop.sh"
+        bash "$SCRIPTS_DIR/equibop.sh"
     fi
 
 
-    if [[ -f "$SCRIPTS_DIR/patch-desktop-entries.sh" ]]; then
+    if [[ -f "$SCRIPTS_DIR/desktop-entries.sh" ]]; then
         info "-> Patching desktop entries..."
-        sudo bash "$SCRIPTS_DIR/patch-desktop-entries.sh"
+        sudo bash "$SCRIPTS_DIR/desktop-entries.sh"
     fi
 
-    if [[ -f "$SCRIPTS_DIR/setup-caelestia-icons.sh" ]]; then
+    if [[ -f "$SCRIPTS_DIR/caelestia-icons.sh" ]]; then
         info "-> Patching Caelestia theme engine to persist 'kora' icons..."
-        bash "$SCRIPTS_DIR/setup-caelestia-icons.sh"
+        bash "$SCRIPTS_DIR/caelestia-icons.sh"
     fi
 }
 

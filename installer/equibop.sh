@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# scripts/setup-equibop.sh
+# scripts/equibop.sh
 
 set -euo pipefail
 

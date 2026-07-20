@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# scripts/setup-snapper.sh
+# scripts/snapper.sh
 
 set -euo pipefail
 

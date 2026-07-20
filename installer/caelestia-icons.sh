@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# scripts/setup-caelestia-icons.sh
+# scripts/caelestia-icons.sh
 
 set -euo pipefail
 

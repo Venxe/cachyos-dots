@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# scripts/setup-libvirt.sh
+# scripts/libvirt.sh
 
 set -euo pipefail
 
