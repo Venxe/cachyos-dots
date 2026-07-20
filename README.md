@@ -4,7 +4,7 @@ This repository contains a quick-install setup of my custom configuration and th
 
 The installation process is fully automated and specifically tailored to my personal workflow.
 
-🐧 **Operating System:** CachyOS
+🐧 **Distribution:** CachyOS
 
 🖼️ **Window Manager:** Hyprland
 
@@ -21,7 +21,7 @@ Run the following command in the terminal to download and install the dotfiles:
 git clone --depth 1 https://github.com/Venxe/cachyos-dots.git ~/cachyos-dots && cd ~/cachyos-dots && chmod +x installer/install.sh && ./installer/install.sh
 ```
 
-### Recomandations:
+### Recommendations:
 
 - [**Wallpapers**](https://github.com/sayimburak/wallpapers) – A curated collection of high-resolution wallpapers
 
