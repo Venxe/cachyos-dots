@@ -6,6 +6,6 @@ function fish_greeting
         return
     end
 
-    set random_img (random choice ~/.config/fastfetch/pokemon/*.png)
+    set random_img (random choice ~/.config/fastfetch/images/*.png)
     command -v fastfetch &> /dev/null && fastfetch --logo-type sixel --logo $random_img --logo-width 18 --logo-height 9 --logo-padding-right 3 --key-padding-left 0 --logo-padding-top 0
 end
