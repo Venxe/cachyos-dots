@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-set -euo pipefail
+
+source "$(dirname "${BASH_SOURCE[0]}")/utils.sh"
 
 readonly BETTERFOX_URL="https://raw.githubusercontent.com/yokoffing/Betterfox/main/user.js"
 readonly FIREFOX_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/mozilla/firefox"
@@ -24,12 +25,17 @@ find_profile() {
   echo "$FIREFOX_DIR/$path"
 }
 
-profile=$(find_profile) || { echo -e "\033[0;31m[ERROR]\033[0m Firefox profile not found. Launch Firefox at least once first."; exit 1; }
-target="$profile/user.js"
+main() {
+    local profile
+    profile=$(find_profile) || error "Firefox profile not found. Launch Firefox at least once first."
+    local target="$profile/user.js"
 
+    curl -sL "$BETTERFOX_URL" -o "$target"
 
-curl -sL "$BETTERFOX_URL" -o "$target"
+    if ! grep -q 'toolkit.legacyUserProfileCustomizations.stylesheets' "$target"; then
+        printf '\n// Caelestia: Required for userChrome.css\n%s\n' "$CAELESTIA_PREF" >> "$target"
+    fi
+    success "BetterFox configurations applied to $target"
+}
 
-if ! grep -q 'toolkit.legacyUserProfileCustomizations.stylesheets' "$target"; then
-  printf '\n// Caelestia: Required for userChrome.css\n%s\n' "$CAELESTIA_PREF" >> "$target"
-fi
+main "$@"

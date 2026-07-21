@@ -1,12 +1,16 @@
 #!/usr/bin/env bash
-# scripts/snapper.sh
 
-set -euo pipefail
+source "$(dirname "${BASH_SOURCE[0]}")/utils.sh"
 
-SNAPPER_CONF="/etc/snapper/configs/root"
+readonly SNAPPER_CONF="/etc/snapper/configs/root"
 
-[[ $EUID -ne 0 ]] && { echo "Run as root."; exit 1; }
-[[ ! -f "$SNAPPER_CONF" ]] && { echo "Not found: $SNAPPER_CONF"; exit 1; }
+main() {
 
-sed -i 's/^NUMBER_LIMIT=.*/NUMBER_LIMIT="10"/' "$SNAPPER_CONF"
-echo "Set: NUMBER_LIMIT=\"10\" → $SNAPPER_CONF"
+    [[ $EUID -ne 0 ]] && error "Run as root."
+    [[ ! -f "$SNAPPER_CONF" ]] && error "Not found: $SNAPPER_CONF"
+
+    sed -i 's/^NUMBER_LIMIT=.*/NUMBER_LIMIT="10"/' "$SNAPPER_CONF"
+    success "NUMBER_LIMIT=\"10\" → $SNAPPER_CONF"
+}
+
+main "$@"
