@@ -22,3 +22,5 @@ hl.window_rule({ match = { class = "(?i)equibop" }, workspace = "special:communi
 hl.window_rule({ match = { class = "(?i)qalculate-gtk" }, float = true })
 hl.window_rule({ match = { class = "(?i)localsend" }, float = true, size = "400 600" })
 hl.window_rule({ match = { class = "(?i)xarchiver" }, float = true, size = "800 600" })
+hl.window_rule({ match = { class = "thunar", title = "Rename.*" }, float = true })
+hl.window_rule({ match = { class = "thunar", title = "Yeniden.*" }, float = true })
