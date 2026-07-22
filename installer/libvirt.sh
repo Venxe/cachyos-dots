@@ -1,19 +1,9 @@
 #!/usr/bin/env bash
-# scripts/libvirt.sh
 
-set -euo pipefail
+source "$(dirname "${BASH_SOURCE[0]}")/utils.sh"
 
-LIBVIRTD_CONF="/etc/libvirt/libvirtd.conf"
-QEMU_CONF="/etc/libvirt/qemu.conf"
-
-[[ $EUID -ne 0 ]] && { echo "Run as root."; exit 1; }
-[[ -z "${SUDO_USER:-}" ]] && { echo "Run with sudo, not as root directly."; exit 1; }
-
-TARGET_USER="$SUDO_USER"
-
-for f in "$LIBVIRTD_CONF" "$QEMU_CONF"; do
-    [[ ! -f "$f" ]] && { echo "Not found: $f"; exit 1; }
-done
+readonly LIBVIRTD_CONF="/etc/libvirt/libvirtd.conf"
+readonly QEMU_CONF="/etc/libvirt/qemu.conf"
 
 set_or_replace() {
     local file="$1" key="$2" value="$3"
@@ -22,18 +12,32 @@ set_or_replace() {
     else
         echo "${key} = ${value}" >> "$file"
     fi
-    echo "Set: ${key} = ${value} → ${file}"
+    success "${key} = ${value} → ${file}"
 }
 
-set_or_replace "$LIBVIRTD_CONF" "unix_sock_group"    "'libvirt'"
-set_or_replace "$LIBVIRTD_CONF" "unix_sock_rw_perms" "'0770'"
-set_or_replace "$QEMU_CONF"     "user"               "\"${TARGET_USER}\""
-set_or_replace "$QEMU_CONF"     "group"              "\"${TARGET_USER}\""
+main() {
 
-usermod -aG libvirt "$TARGET_USER"
-echo "Added ${TARGET_USER} to libvirt group."
+    [[ $EUID -ne 0 ]] && error "Run as root."
+    [[ -z "${SUDO_USER:-}" ]] && error "Run with sudo, not as root directly."
 
-systemctl enable --now libvirtd
-echo "libvirtd enabled and started."
+    local target_user="$SUDO_USER"
 
-echo "Done. Log out and back in for group changes to take effect."
+    for f in "$LIBVIRTD_CONF" "$QEMU_CONF"; do
+        [[ ! -f "$f" ]] && error "Not found: $f"
+    done
+
+    set_or_replace "$LIBVIRTD_CONF" "unix_sock_group"    "'libvirt'"
+    set_or_replace "$LIBVIRTD_CONF" "unix_sock_rw_perms" "'0770'"
+    set_or_replace "$QEMU_CONF"     "user"               "\"${target_user}\""
+    set_or_replace "$QEMU_CONF"     "group"              "\"${target_user}\""
+
+    usermod -aG libvirt "$target_user"
+    success "Added ${target_user} to libvirt group."
+
+    systemctl enable --now libvirtd
+    success "libvirtd enabled and started."
+
+    info "Done. Log out and back in for group changes to take effect."
+}
+
+main "$@"

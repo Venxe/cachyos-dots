@@ -1,18 +1,22 @@
 #!/usr/bin/env bash
-# scripts/limine-resolution.sh
 
-set -euo pipefail
+source "$(dirname "${BASH_SOURCE[0]}")/utils.sh"
 
-CONF="/boot/limine.conf"
-ENTRY="interface_resolution: 1920x1080"
+readonly CONF="/boot/limine.conf"
+readonly ENTRY="interface_resolution: 1920x1080"
 
-[[ $EUID -ne 0 ]] && { echo "Run as root."; exit 1; }
-[[ ! -f "$CONF" ]] && { echo "Not found: $CONF"; exit 1; }
+main() {
 
-if grep -q "^interface_resolution:" "$CONF"; then
-    sed -i "s/^interface_resolution:.*/$ENTRY/" "$CONF"
-    echo "Updated: $ENTRY"
-else
-    sed -i "1i $ENTRY" "$CONF"
-    echo "Inserted: $ENTRY"
-fi
+    [[ $EUID -ne 0 ]] && error "Run as root."
+    [[ ! -f "$CONF" ]] && error "Not found: $CONF"
+
+    if grep -q "^interface_resolution:" "$CONF"; then
+        sed -i "s/^interface_resolution:.*/$ENTRY/" "$CONF"
+        success "Updated: $ENTRY"
+    else
+        sed -i "1i $ENTRY" "$CONF"
+        success "Inserted: $ENTRY"
+    fi
+}
+
+main "$@"

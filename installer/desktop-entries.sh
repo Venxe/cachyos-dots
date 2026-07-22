@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-set -euo pipefail
+
+source "$(dirname "${BASH_SOURCE[0]}")/utils.sh"
 
 readonly DESKTOP_DIRS=(
   "/usr/share/applications"
@@ -10,7 +11,7 @@ declare -A exec_map=(
   ["vitetris"]="vitetris"
 )
 
-hidden_list=(
+readonly hidden_list=(
   "/usr/share/applications/avahi-discover.desktop"
   "/usr/share/applications/bssh.desktop"
   "/usr/share/applications/bvnc.desktop"
@@ -48,21 +49,32 @@ hide_entry() {
          -e '/^\[Desktop Entry\]/a NoDisplay=true' "$file"
 }
 
-if (( ${#exec_map[@]} > 0 )); then
-  for app in "${!exec_map[@]}"; do
-    for dir in "${DESKTOP_DIRS[@]}"; do
-      file="$dir/${app}.desktop"
-      [[ -f "$file" ]] && update_exec "$file" "${exec_map[$app]}" && break
-    done
-  done
-fi
+main() {
+    if (( ${#exec_map[@]} > 0 )); then
+        for app in "${!exec_map[@]}"; do
+            for dir in "${DESKTOP_DIRS[@]}"; do
+                file="$dir/${app}.desktop"
+                if [[ -f "$file" ]]; then
+                    update_exec "$file" "${exec_map[$app]}"
+                    info "Updated exec for $app"
+                    break
+                fi
+            done
+        done
+    fi
 
-shopt -s nullglob
-if (( ${#hidden_list[@]} > 0 )); then
-  for pattern in "${hidden_list[@]}"; do
-    for file in $pattern; do
-      hide_entry "$file"
-    done
-  done
-fi
-shopt -u nullglob
+    info "Hiding specific desktop entries..."
+    shopt -s nullglob
+    if (( ${#hidden_list[@]} > 0 )); then
+        for pattern in "${hidden_list[@]}"; do
+            for file in $pattern; do
+                hide_entry "$file"
+            done
+        done
+    fi
+    shopt -u nullglob
+
+    success "Desktop entries patched successfully."
+}
+
+main "$@"

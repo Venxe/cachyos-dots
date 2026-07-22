@@ -2,27 +2,12 @@
 
 clear
 
-# --- BASH STRICT MODE & ERROR HANDLING ---
-set -Eeuo pipefail
-trap 'error "Failed at line $LINENO: $BASH_COMMAND\nInstallation aborted!"' ERR
-
-# --- CONSTANTS ---
-readonly GREEN='\033[0;32m'
-readonly BLUE='\033[0;34m'
-readonly YELLOW='\033[1;33m'
-readonly RED='\033[0;31m'
-readonly NC='\033[0m'
+source "$(dirname "${BASH_SOURCE[0]}")/utils.sh"
 
 readonly DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 readonly PACKAGES_DIR="$DIR/installer/packages"
 readonly SCRIPTS_DIR="$DIR/installer"
 
-# --- HELPER FUNCTIONS ---
-info() { echo -e "${BLUE}[INFO]${NC} $1"; }
-success() { echo -e "${GREEN}[SUCCESS]${NC} $1"; }
-error() { echo -e "${RED}[ERROR]${NC} $1"; exit 1; }
-
-# --- CORE FUNCTIONS ---
 print_banner() {
     echo -e "\e[36m"
     cat << "EOF"
@@ -134,7 +119,6 @@ enable_services() {
     sudo systemctl enable --now tailscaled.service
 }
 
-# --- MAIN EXECUTION ---
 main() {
     print_banner
     check_privileges
