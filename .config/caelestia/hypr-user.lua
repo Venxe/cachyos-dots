@@ -9,7 +9,7 @@ end)
 
 hl.monitor({ output = "DP-1", mode = "2560x1440@165.08Hz", position = "auto", scale = 1, })
 
-hl.env("XCURSOR_THEME", "Qogir-Dark")
+hl.env("XCURSOR_THEME", "Qogir-white-cursors")
 hl.env("XCURSOR_SIZE", "24")
 
 hl.config({
@@ -26,3 +26,5 @@ hl.window_rule({ match = { class = "(?i)xarchiver" }, float = true, size = "800 
 hl.window_rule({ match = { class = "(?i)org.gnome.networkdisplays" }, float = true })
 hl.window_rule({ match = { class = "(?i)localsend" }, float = true, size = "400 600" })
 hl.window_rule({ match = { class = "(?i)upscayl" }, float = true })
+hl.window_rule({ match = { class = "^steam$" }, float = true })
+hl.window_rule({ match = { class = "^steam$", title = "^Steam$" }, float = false })
