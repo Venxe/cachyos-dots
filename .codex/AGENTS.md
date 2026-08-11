@@ -41,7 +41,7 @@ Apply these defaults to all engineering work, calibrated to the scope and risk o
 
 - Understand the relevant code path before changing or verifying it.
 - For trivial, low-risk changes, edit directly and verify. For larger or architectural changes, work in small verifiable steps.
-- Fix minor nearby issues only when they stay within scope. For significant architectural, security, or correctness concerns, stop, explain the evidence and proposed remedy, and get approval before expanding the work.
+- Fix minor nearby issues only when they stay within scope. Do not expand the requested scope to fix significant unrelated architectural, security, or correctness concerns without approval. Report the evidence and proposed remedy; continue the requested work when it remains safe and correct.
 - Treat cyclomatic complexity of at least 10, cognitive complexity of at least 15, loop or recursion nesting of at least 3, unguarded recursion, or an untested symbol with at least five distinct callers as objective signals for closer review.
 - Ask when ambiguity affects correctness, architecture, or a hard-to-reverse choice. For low-stakes choices, make a reasonable assumption, state it, and continue.
 - The user's explicit intent overrides these defaults. If the request deliberately trades against them, state the tradeoff briefly and follow the request.
@@ -60,7 +60,7 @@ When several capabilities match, let the domain plugin own the workflow, use MCP
 
 ### MCP Servers
 
-- `codebase_memory_mcp`: follow the managed routing above. Verify or refresh the index before relying on it; orient with architecture on unfamiliar or large work; inspect the graph schema before non-trivial Cypher; use change detection and ADR capabilities for large architectural work when available.
+- `codebase_memory_mcp`: for structural discovery, follow the managed routing when the index is current and represents the relevant code; otherwise use text or file search and state the fallback. Verify or refresh the index before relying on graph results; orient with architecture on unfamiliar or large work; inspect the graph schema before non-trivial Cypher; use change detection and ADR capabilities for large architectural work when available.
 - `context_mode`: use when deriving an answer from large or unbounded command output, logs, structured files, specifications, or several related read-only commands. Return only the relevant derivation. Use the normal shell for short fixed output, Codebase Memory for code relationships, and edit tools for file changes. Keep CPU-bound or stateful commands sequential.
 - `mcp_server_context7`: use before adopting a library or relying on an unfamiliar or current library, framework, SDK, CLI, or cloud API. Resolve the library ID first unless the user supplied one, then query one focused topic at a time. After three unsuccessful calls per tool, use the best primary documentation or official web source and disclose the fallback.
 - `postgres_context_server`: inspect the connected database schema before querying runtime state. Keep queries read-only, narrow selected columns and row counts, and avoid bringing secrets or unnecessary personal data into the conversation. If the target environment is ambiguous, identify it before querying.
@@ -77,7 +77,7 @@ When several capabilities match, let the domain plugin own the workflow, use MCP
 - `codebase-design`: use when a module's interface, seam, depth, adapter placement, or testability is materially in question. Resolve the interface and seam before implementation or TDD.
 - `tdd`: use for explicit test-first or integration-test requests, reproducible bugs, and high-risk changes to security, persistence/data integrity, public interfaces, or critical state. Work one red-to-green slice at a time through an approved seam; ask before introducing a new seam. Skip documentation, configuration, visual-only, and behavior-preserving mechanical changes unless requested, but still run existing checks.
 
-Treat unsafe browser-code execution as RCE-equivalent. Use it only after an explicit, per-instance user request that states what will run.
+Treat execution of untrusted or externally supplied JavaScript in a browser context as RCE-equivalent. Normal Playwright navigation, inspection, and interaction are permitted. Use such execution only after an explicit, per-instance user request that states what will run.
 
 ## Delivery
 
