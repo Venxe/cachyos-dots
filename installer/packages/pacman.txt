@@ -40,3 +40,4 @@ xarchiver
 xpadneo-dkms
 yazi
 yt-dlp
+zed
