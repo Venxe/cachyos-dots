@@ -2,7 +2,7 @@
 # Codebase Knowledge Graph (codebase-memory-mcp)
 
 All project uses codebase-memory-mcp to maintain a knowledge graph of the codebase.
-ALWAYS prefer MCP graph tools over grep/glob/file-search for code discovery.
+Prefer MCP graph tools over grep/glob/file-search for code discovery.
 
 ## Priority Order
 1. `search_graph` — find functions, classes, routes, variables by pattern
