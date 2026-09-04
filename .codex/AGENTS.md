@@ -38,7 +38,7 @@ Apply these defaults to all engineering work, calibrated to the scope and risk o
 * Prefer the simplest readable solution a competent teammate can follow. Avoid clever one-liners, chained ternaries, and unnecessary abstraction layers.
 * Implement only the current requirement. Do not add speculative configuration, hooks, or generalized interfaces.
 * Apply the Rule of Three to duplicated behavior: tolerate up to two instances before extracting shared logic. Give constants, endpoints, and configuration facts a single named source immediately.
-* Before adding custom machinery, resolve in order: needed at all (skip if not) → existing codebase solution → stdlib → native platform/framework feature → appropriate already-installed dependency → simplest local implementation. Inspect the codebase and dependency manifests before deciding. Security, input validation, accessibility, and data-loss handling are never skipped for brevity.
+* Before adding custom machinery, use the first option that fits: skip it if unnecessary → existing codebase solution → stdlib → native platform/framework feature → already-installed dependency → simplest local implementation. Inspect the codebase and dependency manifests before deciding. Never trade away security, input validation, accessibility, or data-loss protection for brevity.
 * Keep one reason to change per function, class, or module. Use intention-revealing names and guard clauses; more than roughly two nested conditional levels is a signal to reconsider the structure.
 * Preserve established architecture and nearby formatting. Do not reformat or refactor unrelated code.
 
