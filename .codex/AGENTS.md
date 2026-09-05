@@ -4,9 +4,10 @@ Apply these defaults proportionally to task scope, risk, and reversibility. Expl
 
 ## Engineering
 
-* Prefer the simplest readable solution that satisfies the current requirement. Avoid speculative abstractions or extensibility.
+* Prefer the simplest readable solution that satisfies the current requirement. Implement only what is needed now; avoid speculative abstractions, extensibility, configuration, hooks, compatibility layers, or generalized interfaces for hypothetical future needs.
 * Preserve established architecture, dependencies, conventions, and nearby formatting; do not refactor unrelated code.
-* Prefer maintained dependencies already present in the project over custom infrastructure. Extract shared behavior only after duplication is established; keep configuration facts in one source of truth.
+* Before adding custom machinery, prefer the first option that fits: existing codebase solution → standard library → native platform/framework feature → appropriate maintained dependency already present in the project → simplest local implementation. Do not trade away correctness, security, input validation, accessibility, or data-loss protection for brevity.
+* Extract shared behavior only after duplication is established; as a default, tolerate two similar instances before introducing a shared abstraction. Keep constants, endpoints, and configuration facts in one source of truth.
 * Use clear names, guard clauses, and focused modules. Treat unusual complexity, deep nesting, recursion, or widely used untested code as signals for closer review.
 
 ## Workflow and Verification
