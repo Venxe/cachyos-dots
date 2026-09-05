@@ -1,90 +1,45 @@
-<!-- codebase-memory-mcp:start -->
+# General Engineering Instructions
 
-# Codebase Knowledge Graph (codebase-memory-mcp)
+Apply these defaults proportionally to task scope, risk, and reversibility. Explicit user instructions and more specific project guidance take precedence.
 
-Each project uses codebase-memory-mcp to maintain a knowledge graph of its codebase.
-Prefer MCP graph tools over grep/glob/file-search for code discovery.
+## Engineering
 
-## Priority Order
+* Prefer the simplest readable solution that satisfies the current requirement. Avoid speculative abstractions or extensibility.
+* Preserve established architecture, dependencies, conventions, and nearby formatting; do not refactor unrelated code.
+* Prefer maintained dependencies already present in the project over custom infrastructure. Extract shared behavior only after duplication is established; keep configuration facts in one source of truth.
+* Use clear names, guard clauses, and focused modules. Treat unusual complexity, deep nesting, recursion, or widely used untested code as signals for closer review.
 
-1. `search_graph` — find functions, classes, routes, variables by pattern
-2. `trace_path` — trace who calls a function or what it calls
-3. `get_code_snippet` — read specific function/class source code
-4. `query_graph` — run Cypher queries for complex patterns
-5. `get_architecture` — high-level project summary
+## Workflow and Verification
 
-## When to fall back to grep/glob
-
-* Searching for string literals, error messages, config values
-* Searching non-code files (Dockerfiles, shell scripts, configs)
-* When MCP tools return insufficient results
-
-## Examples
-
-* Find a handler: `search_graph(name_pattern=".*OrderHandler.*")`
-* Who calls it: `trace_path(function_name="OrderHandler", direction="inbound")`
-* Read source: `get_code_snippet(qualified_name="pkg/orders.OrderHandler")`
-
-<!-- codebase-memory-mcp:end -->
-
----
-
-# General Engineering Working Agreements
-
-Apply these defaults to all engineering work, calibrated to the scope and risk of each change rather than as a rigid checklist.
-
-## Design and Code Quality
-
-* Prefer the simplest readable solution a competent teammate can follow. Avoid clever one-liners, chained ternaries, and unnecessary abstraction layers.
-* Implement only the current requirement. Do not add speculative configuration, hooks, or generalized interfaces.
-* Apply the Rule of Three to duplicated behavior: tolerate up to two instances before extracting shared logic. Give constants, endpoints, and configuration facts a single named source immediately.
-* Before adding custom machinery, use the first option that fits: skip it if not needed → existing codebase solution → stdlib → native platform/framework feature → appropriate already-installed dependency → simplest local implementation. Inspect the codebase and dependency manifests before deciding. Never trade away security, input validation, accessibility, or data-loss protection for brevity.
-* Keep one reason to change per function, class, or module. Use intention-revealing names and guard clauses; more than roughly two nested conditional levels is a signal to reconsider the structure.
-* Preserve established architecture and nearby formatting. Do not reformat or refactor unrelated code.
-
-## Working Method
-
-* Understand the relevant code path before changing or verifying it.
-* For trivial, low-risk changes, edit directly and verify. For larger or architectural changes, work in small verifiable steps.
-* Fix minor nearby issues only when they stay within scope. Do not expand the requested scope to fix significant unrelated architectural, security, or correctness concerns without approval. Report the evidence and proposed remedy; continue the requested work when it remains safe and correct.
-* Treat cyclomatic complexity of at least 10, cognitive complexity of at least 15, loop or recursion nesting of at least 3, unguarded recursion, or an untested symbol with at least five distinct callers as objective signals for closer review.
-* Ask when ambiguity affects correctness, architecture, or a hard-to-reverse choice. For low-stakes choices, make a reasonable assumption, state it, and continue.
-* The user's explicit intent overrides these defaults. If the request deliberately trades against them, state the tradeoff briefly and follow the request.
-
-## Baseline Practices
-
-* Handle expected failure paths explicitly; never silently swallow exceptions.
-* Test behavior through public interfaces rather than implementation details. Mock external boundaries, keep tests deterministic, and add regression coverage for bug fixes, including success and failure paths.
-* Validate untrusted input. Never hardcode or commit secrets, credentials, tokens, logs, or runtime data. Flag security-sensitive changes.
+* Understand the relevant code path before non-trivial changes. For localized low-risk work, edit directly and run the smallest useful verification; for risky or architectural work, proceed in small verifiable steps.
+* Stay within scope. Report significant unrelated issues instead of expanding the task without approval.
+* Ask only when ambiguity materially affects correctness, architecture, security, data integrity, or another hard-to-reverse decision; otherwise make a reasonable assumption and continue.
+* Handle expected failures explicitly, validate untrusted input, and never commit secrets, credentials, tokens, sensitive logs, or runtime data.
+* Test through public interfaces where practical, mock external boundaries, and keep tests deterministic. Add regression coverage for reproducible bugs and meaningful high-risk behavior changes.
+* Run the narrowest relevant checks first; broaden only when scope, failures, or unresolved risk justify it.
+* Never fabricate tool results or verification. Report unavailable tools, failed checks, fallbacks, and remaining gaps.
 
 ## Capability Routing
 
-Use the smallest set of capabilities that covers the task. Confirm that a tool is callable in the current session before relying on it; cached plugin files or remembered availability do not establish installation, authorization, or connectivity. Never silently skip a required call or fabricate output. Report failures, the fallback taken, and any remaining verification gap.
+Use a capability when its trigger applies; do not mechanically probe or invoke every capability. When selected, confirm it is available before relying on it. If a required capability is unavailable, use the best reasonable fallback and report the gap.
 
-When several capabilities match, let the domain plugin own the workflow, use MCPs for evidence, `codebase-design` for interface decisions, and `tdd` for explicitly requested TDD workflows.
+* `codebase_memory_mcp` → structural discovery, call relationships, dependency paths, or unfamiliar architecture. Prefer it for structural code discovery when its index covers the current repository. Priority: `search_graph` → `trace_path` → `get_code_snippet`; use `query_graph` for complex relationships and `get_architecture` for broad orientation. Use text/file search for literals, errors, config, non-code files, or when graph results are unavailable, stale, or insufficient. Verify or refresh the index only when freshness matters to correctness.
+* `context_mode` → large or unbounded read-only outputs, logs, specifications, or structured data needing focused derivation.
+* `mcp_server_context7` → correctness depends on current or unfamiliar library, framework, SDK, CLI, or cloud API behavior.
+* `postgres_context_server` → runtime database inspection; identify an ambiguous target first, inspect schema, and keep queries read-only, narrow, and privacy-conscious.
+* `codex-security` → explicit security scans/reviews, finding validation, remediation, or hardening; do not turn ordinary changes into broad scans.
+* `data-analytics` → data quality, KPIs, quantitative analysis, analytical reports, dashboards, notebooks, or visualizations.
+* `github` → GitHub repositories, PRs, issues, reviews, CI, or publishing; keep external writes within requested scope and approval gates.
+* `product-design` → explicit product-design/UX exploration, visual alternatives, or prototype work; not routine frontend implementation.
+* `codebase-design` → interface, seam, module-boundary, adapter-placement, or testability decisions.
+* `tdd` → explicit test-first work, reproducible bugs, or high-risk changes involving security, permissions, persistence/data integrity, public interfaces, or critical state.
 
-### MCP Servers
+When several capabilities apply, let the domain-specific capability own the workflow and use MCPs primarily for evidence. Resolve new seam/interface decisions with `codebase-design` before TDD.
 
-* `codebase_memory_mcp`: for structural discovery, follow the managed routing when the index is current and represents the relevant code; otherwise use text or file search and state the fallback. Verify or refresh the index before relying on graph results; orient with architecture on unfamiliar or large work; inspect the graph schema before non-trivial Cypher; use change detection and ADR capabilities for large architectural work when available.
-* `context_mode`: use when deriving an answer from large or unbounded command output, logs, structured files, specifications, or several related read-only commands. Return only the relevant derivation. Use the normal shell for short fixed output, Codebase Memory for code relationships, and edit tools for file changes. Keep CPU-bound or stateful commands sequential.
-* `mcp_server_context7`: use before adopting a library or relying on an unfamiliar or current library, framework, SDK, CLI, or cloud API. Resolve the library ID first unless the user supplied one, then query one focused topic at a time. After three unsuccessful calls per tool, use the best primary documentation or official web source and disclose the fallback.
-* `postgres_context_server`: inspect the connected database schema before querying runtime state. Keep queries read-only, narrow selected columns and row counts, and avoid bringing secrets or unnecessary personal data into the conversation. If the target environment is ambiguous, identify it before querying.
+## Browser Safety
 
-### Plugins
-
-* `codex-security`: use for explicit security scans, security diff reviews, finding validation, remediation, vulnerability reporting, or hardening work. Apply baseline secure-engineering practices to ordinary changes without automatically expanding them into a broad scan.
-* `data-analytics`: use for data quality, KPI design and reporting, metric diagnosis, quantitative decisions, analytical reports, dashboards, notebooks, and visualizations. Validate evidence and definitions before presenting conclusions.
-* `github`: use for GitHub repository, pull request, issue, review-comment, CI, and publishing workflows. Keep external writes within the user's requested scope and the selected skill's approval gates.
-* `product-design`: use for explicit product-design exploration, UX audits, visual alternatives, faithful URL/image implementation, or prototype sharing. Do not invoke it for ordinary frontend implementation unless the user asks for product-design work.
-
-### User Skills
-
-* `codebase-design`: use when a module's interface, seam, depth, adapter placement, or testability is materially in question. Resolve the interface and seam before implementation or TDD.
-* `tdd`: use when the user explicitly requests test-first development, red-green-refactor, or integration tests. Let the skill own the TDD workflow, seam rules, and red-to-green loop.
-
-Treat execution of untrusted or externally supplied JavaScript in a browser context as RCE-equivalent. Normal Playwright navigation, inspection, and interaction are permitted. Use such execution only after an explicit, per-instance user request that states what will run.
+Treat execution of untrusted or externally supplied JavaScript in a browser context as RCE-equivalent. Normal navigation, inspection, and interaction are allowed; execute such JavaScript only after an explicit per-instance user request specifying what will run.
 
 ## Delivery
 
-* Keep changes and commits focused. Use specific imperative commit summaries.
-* In pull requests, explain the problem and solution, list validation commands, link related issues, and identify migrations or environment changes.
+Keep changes and commits focused. Use imperative commit summaries. For pull requests, summarize the problem and solution, list validation performed, and call out migrations or environment changes.
