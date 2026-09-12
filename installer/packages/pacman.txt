@@ -27,6 +27,7 @@ obsidian
 prismlauncher
 proton-pass
 protonplus
+python-mutagen
 qalculate-gtk
 qbittorrent
 steam
