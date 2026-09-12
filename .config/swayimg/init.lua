@@ -45,6 +45,41 @@ swayimg.viewer.on_key("left", function() navigate("prev") end)
 swayimg.viewer.on_mouse("ScrollDown", function() navigate("next") end)
 swayimg.viewer.on_mouse("ScrollUp", function() navigate("prev") end)
 
+-- Zoom toggle on double click
+local click_pending = false
+local base_scale = nil
+
+swayimg.viewer.on_image_change(function()
+  base_scale = nil
+end)
+
+local function toggle_zoom()
+  local curr_scale = swayimg.viewer.scale or 1.0
+  if not base_scale then
+    base_scale = curr_scale
+  end
+
+  if curr_scale > base_scale + 0.05 then
+    swayimg.viewer.reset()
+  else
+    local mouse = swayimg.get_mouse_pos()
+    local target = (curr_scale < 0.95) and 1.0 or (curr_scale * 2.0)
+    swayimg.viewer.set_abs_scale(target, mouse.x, mouse.y)
+  end
+end
+
+swayimg.viewer.on_mouse("MouseLeft", function()
+  if click_pending then
+    click_pending = false
+    toggle_zoom()
+  else
+    click_pending = true
+    swayimg.defer(0.3, function()
+      click_pending = false
+    end)
+  end
+end)
+
 -- Rotation
 swayimg.viewer.on_key("r", function() swayimg.viewer.rotate(90) end)
 swayimg.viewer.on_key({ "Shift+r", "R" }, function() swayimg.viewer.rotate(270) end)
