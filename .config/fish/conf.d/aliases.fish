@@ -17,3 +17,5 @@ abbr dcdn 'docker compose down'
 abbr dlopus 'yt-dlp --no-playlist -x --audio-format opus --embed-thumbnail --embed-metadata'
 abbr dlmkv 'yt-dlp --no-playlist -f "bestvideo+bestaudio/best" --merge-output-format mkv'
 abbr dlmp4 'yt-dlp --no-playlist -f "bestvideo+bestaudio/best" --merge-output-format mp4'
+
+abbr y 'yazi'
