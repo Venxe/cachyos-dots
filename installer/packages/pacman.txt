@@ -2,6 +2,8 @@
 calf
 cava
 darktable
+docker
+docker-compose
 easyeffects
 ffmpegthumbnailer
 flatpak
@@ -12,6 +14,7 @@ gvfs
 gvfs-mtp
 gvfs-smb
 heroic-games-launcher
+lazydocker
 libgsf
 libreoffice-fresh
 localsend
