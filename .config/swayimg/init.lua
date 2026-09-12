@@ -40,34 +40,14 @@ local function navigate(dir)
   end)
 end
 
-swayimg.viewer.on_key("right", function()
-  navigate("next")
-end)
-
-swayimg.viewer.on_key("left", function()
-  navigate("prev")
-end)
-
-swayimg.viewer.on_key("space", function()
-  navigate("next")
-end)
-
-swayimg.viewer.on_mouse("ScrollDown", function()
-  navigate("next")
-end)
-
-swayimg.viewer.on_mouse("ScrollUp", function()
-  navigate("prev")
-end)
+swayimg.viewer.on_key({ "right", "space" }, function() navigate("next") end)
+swayimg.viewer.on_key("left", function() navigate("prev") end)
+swayimg.viewer.on_mouse("ScrollDown", function() navigate("next") end)
+swayimg.viewer.on_mouse("ScrollUp", function() navigate("prev") end)
 
 -- Rotation
-swayimg.viewer.on_key("r", function()
-  swayimg.viewer.rotate(90)
-end)
-
-swayimg.viewer.on_key({ "Shift+r", "Shift-r", "R" }, function()
-  swayimg.viewer.rotate(270)
-end)
+swayimg.viewer.on_key("r", function() swayimg.viewer.rotate(90) end)
+swayimg.viewer.on_key({ "Shift+r", "R" }, function() swayimg.viewer.rotate(270) end)
 
 -- Trash & Undo
 local trash_history = {}
@@ -83,74 +63,38 @@ local function trash_image(img)
 end
 
 local function restore_trashed_image()
-  local target_path = table.remove(trash_history)
-  local restored_path = nil
-
-  if target_path then
-    local cmd = string.format('TARGET=%q; URI=$(gio trash --list | awk -F\'\\t\' -v p="$TARGET" \'$2 == p { uri = $1 } END { if (uri) print uri }\'); if [ -n "$URI" ]; then gio trash --restore "$URI"; fi', target_path)
-    os.execute(cmd)
-    restored_path = target_path
-  else
-    local handle = io.popen("gio trash --list | head -n 1")
-    if handle then
-      local line = handle:read("*l")
-      handle:close()
-      if line and #line > 0 then
-        local uri, orig = line:match("^(%S+)\t(.+)$")
-        if uri and orig then
-          os.execute(string.format("gio trash --restore %q", uri))
-          restored_path = orig
-        end
-      end
-    end
+  local path = table.remove(trash_history)
+  if not path then
+    return
   end
+  local cmd = string.format('TARGET=%q; URI=$(gio trash --list | awk -F\'\\t\' -v p="$TARGET" \'$2 == p { uri = $1 } END { if (uri) print uri }\'); [ -n "$URI" ] && gio trash --restore "$URI"', path)
+  os.execute(cmd)
 
-  if restored_path then
-    if swayimg.mode == "viewer" then
-      swayimg.viewer.open_path(restored_path)
-    elseif swayimg.mode == "gallery" then
-      swayimg.imagelist.add(restored_path)
-      swayimg.gallery.select_path(restored_path)
-    end
+  if swayimg.mode == "viewer" then
+    swayimg.viewer.open_path(path)
+  elseif swayimg.mode == "gallery" then
+    swayimg.imagelist.add(path)
+    swayimg.gallery.select_path(path)
   end
 end
 
-swayimg.viewer.on_key("Delete", function()
-  trash_image(swayimg.viewer.get_image())
-end)
-
-swayimg.gallery.on_key("Delete", function()
-  trash_image(swayimg.gallery.get_image())
-end)
-
-swayimg.viewer.on_key({ "Ctrl+z", "Ctrl-z", "Ctrl+Z", "Ctrl-Z", "u" }, function()
-  restore_trashed_image()
-end)
-
-swayimg.gallery.on_key({ "Ctrl+z", "Ctrl-z", "Ctrl+Z", "Ctrl-Z", "u" }, function()
-  restore_trashed_image()
-end)
+swayimg.viewer.on_key("Delete", function() trash_image(swayimg.viewer.get_image()) end)
+swayimg.gallery.on_key("Delete", function() trash_image(swayimg.gallery.get_image()) end)
+swayimg.viewer.on_key({ "Ctrl+z", "u" }, restore_trashed_image)
+swayimg.gallery.on_key({ "Ctrl+z", "u" }, restore_trashed_image)
 
 -- Toggle OSD
-swayimg.viewer.on_key("t", function()
+local function toggle_osd()
   swayimg.text.visible = not swayimg.text.visible
-end)
-
-swayimg.gallery.on_key("t", function()
-  swayimg.text.visible = not swayimg.text.visible
-end)
+end
+swayimg.viewer.on_key("t", toggle_osd)
+swayimg.gallery.on_key("t", toggle_osd)
 
 -- Edit in Swappy
-swayimg.viewer.on_key("e", function()
-  local img = swayimg.viewer.get_image()
+local function edit_in_swappy(img)
   if img and img.path then
     os.execute(string.format("swappy -f %q &", img.path))
   end
-end)
-
-swayimg.gallery.on_key("e", function()
-  local img = swayimg.gallery.get_image()
-  if img and img.path then
-    os.execute(string.format("swappy -f %q &", img.path))
-  end
-end)
+end
+swayimg.viewer.on_key("e", function() edit_in_swappy(swayimg.viewer.get_image()) end)
+swayimg.gallery.on_key("e", function() edit_in_swappy(swayimg.gallery.get_image()) end)
