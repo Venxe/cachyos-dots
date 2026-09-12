@@ -5,6 +5,8 @@ swayimg.antialiasing = true
 swayimg.exif_orientation = true
 swayimg.viewer.default_scale = "optimal"
 swayimg.viewer.default_position = "center"
+swayimg.viewer.preload = 3
+swayimg.viewer.history = 2
 
 -- Image list
 swayimg.imagelist.adjacent = true
@@ -25,24 +27,37 @@ swayimg.format_conf = {
 }
 
 -- Navigation
+local nav_locked = false
+
+local function navigate(dir)
+  if nav_locked then
+    return
+  end
+  nav_locked = true
+  swayimg.viewer.open(dir)
+  swayimg.defer(0.07, function()
+    nav_locked = false
+  end)
+end
+
 swayimg.viewer.on_key("right", function()
-  swayimg.viewer.open("next")
+  navigate("next")
 end)
 
 swayimg.viewer.on_key("left", function()
-  swayimg.viewer.open("prev")
+  navigate("prev")
 end)
 
 swayimg.viewer.on_key("space", function()
-  swayimg.viewer.open("next")
+  navigate("next")
 end)
 
 swayimg.viewer.on_mouse("ScrollDown", function()
-  swayimg.viewer.open("next")
+  navigate("next")
 end)
 
 swayimg.viewer.on_mouse("ScrollUp", function()
-  swayimg.viewer.open("prev")
+  navigate("prev")
 end)
 
 -- Rotation
