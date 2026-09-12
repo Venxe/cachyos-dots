@@ -7,6 +7,8 @@ swayimg.viewer.default_scale = "optimal"
 swayimg.viewer.default_position = "center"
 swayimg.viewer.preload = 3
 swayimg.viewer.history = 2
+swayimg.viewer.set_window_background(0x00000000)
+swayimg.gallery.window_color = 0x00000000
 
 -- Image list
 swayimg.imagelist.adjacent = true

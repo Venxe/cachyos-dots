@@ -1,5 +1,4 @@
 hl.on("hyprland.start", function()
-    hl.exec_cmd("sleep 1 && hyprshade on vibrance")
     hl.exec_cmd("wl-clip-persist --clipboard regular")
     hl.exec_cmd("easyeffects --gapplication-service")
     hl.exec_cmd("fish -c wall")
@@ -15,6 +14,9 @@ hl.env("XCURSOR_SIZE", "24")
 hl.config({
     input = {
         kb_layout = "tr",
+    },
+    decoration = {
+        screen_shader = (os.getenv("HOME") or "") .. "/.config/hypr/shaders/vibrance.glsl",
     },
 })
 
