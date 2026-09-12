@@ -26,5 +26,6 @@ hl.window_rule({ match = { class = "(?i)xarchiver" }, float = true, size = "800 
 hl.window_rule({ match = { class = "(?i)org.gnome.networkdisplays" }, float = true })
 hl.window_rule({ match = { class = "(?i)localsend" }, float = true, size = "400 600" })
 hl.window_rule({ match = { class = "(?i)upscayl" }, float = true })
+hl.window_rule({ match = { class = "(?i)swayimg" }, float = true })
 hl.window_rule({ match = { class = "^steam$" }, float = true })
 hl.window_rule({ match = { class = "^steam$", title = "^Steam$" }, float = false })
