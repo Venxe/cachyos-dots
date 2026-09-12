@@ -1,5 +1,6 @@
 abbr paclean 'sudo pacman -Rns (pacman -Qdtq)'
 
+abbr tss 'tailscale status'
 abbr tsu 'sudo tailscale up'
 abbr tsd 'sudo tailscale down'
 
@@ -12,3 +13,7 @@ abbr tetris 'vitetris'
 abbr lzd 'lazydocker'
 abbr dcup 'docker compose up -d'
 abbr dcdn 'docker compose down'
+
+abbr ytopus 'yt-dlp --no-playlist -x --audio-format opus'
+abbr ytmkv 'yt-dlp --no-playlist -f "bestvideo+bestaudio/best" --merge-output-format mkv'
+abbr ytmp4 'yt-dlp --no-playlist -f "bestvideo+bestaudio/best" --merge-output-format mp4'
