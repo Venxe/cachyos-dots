@@ -11,8 +11,11 @@ application/pdf=firefox.desktop
 # Text & Development
 text/plain=dev.zed.Zed.desktop
 text/html=dev.zed.Zed.desktop
+text/css=dev.zed.Zed.desktop
 text/csv=dev.zed.Zed.desktop
 application/json=dev.zed.Zed.desktop
+text/x-python=dev.zed.Zed.desktop
+text/x-shellscript=dev.zed.Zed.desktop
 
 # Markdown & Notes
 text/markdown=obsidian.desktop
