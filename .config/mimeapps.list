@@ -16,7 +16,6 @@ application/json=dev.zed.Zed.desktop
 
 # Markdown & Notes
 text/markdown=obsidian.desktop
-text/x-markdown=obsidian.desktop
 
 # Images
 image/png=swayimg.desktop
@@ -34,10 +33,10 @@ video/matroska=mpv.desktop
 video/webm=mpv.desktop
 video/quicktime=mpv.desktop
 video/vnd.avi=mpv.desktop
-audio/mpeg=mpv.desktop
-audio/flac=mpv.desktop
-audio/ogg=mpv.desktop
-audio/vnd.wave=mpv.desktop
+audio/mpeg=io.bassi.Amberol.desktop
+audio/flac=io.bassi.Amberol.desktop
+audio/ogg=io.bassi.Amberol.desktop
+audio/vnd.wave=io.bassi.Amberol.desktop
 
 # Archives
 application/zip=xarchiver.desktop
@@ -75,11 +74,9 @@ x-scheme-handler/codex=chatgpt.desktop
 
 [Added Associations]
 text/markdown=dev.zed.Zed.desktop;
-text/x-markdown=dev.zed.Zed.desktop;
 text/csv=libreoffice-calc.desktop;
 text/html=firefox.desktop;
-application/json=firefox.desktop;
 application/pdf=libreoffice-draw.desktop;
 image/png=swappy.desktop;
 image/jpeg=swappy.desktop;org.darktable.darktable.desktop;
-image/x-sony-arw=swayimg.desktop;org.darktable.darktable.desktop;
+image/x-sony-arw=org.darktable.darktable.desktop;

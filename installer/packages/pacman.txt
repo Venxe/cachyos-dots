@@ -1,4 +1,5 @@
 7zip
+amberol
 calf
 cava
 darktable
