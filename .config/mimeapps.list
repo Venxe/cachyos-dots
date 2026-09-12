@@ -1,0 +1,71 @@
+[Default Applications]
+# File Manager
+inode/directory=thunar.desktop
+x-scheme-handler/file=thunar.desktop
+
+# Web & PDF
+x-scheme-handler/http=firefox.desktop
+x-scheme-handler/https=firefox.desktop
+application/pdf=firefox.desktop
+
+# Text & Development
+text/plain=dev.zed.Zed.desktop
+text/html=dev.zed.Zed.desktop
+text/csv=dev.zed.Zed.desktop
+application/json=dev.zed.Zed.desktop
+
+# Markdown & Notes
+text/markdown=obsidian.desktop
+text/x-markdown=obsidian.desktop
+
+# Images
+image/png=swayimg.desktop
+image/jpeg=swayimg.desktop
+image/gif=swayimg.desktop
+image/webp=swayimg.desktop
+image/svg+xml=swayimg.desktop
+image/bmp=swayimg.desktop
+image/avif=swayimg.desktop
+
+# Audio & Video
+video/mp4=mpv.desktop
+video/matroska=mpv.desktop
+video/webm=mpv.desktop
+video/quicktime=mpv.desktop
+video/vnd.avi=mpv.desktop
+audio/mpeg=mpv.desktop
+audio/flac=mpv.desktop
+audio/ogg=mpv.desktop
+audio/vnd.wave=mpv.desktop
+
+# Archives
+application/zip=xarchiver.desktop
+application/x-7z-compressed=xarchiver.desktop
+application/x-tar=xarchiver.desktop
+application/x-compressed-tar=xarchiver.desktop
+application/x-bzip2-compressed-tar=xarchiver.desktop
+application/x-xz-compressed-tar=xarchiver.desktop
+application/vnd.rar=xarchiver.desktop
+
+# Office Documents
+application/vnd.openxmlformats-officedocument.wordprocessingml.document=libreoffice-writer.desktop
+application/msword=libreoffice-writer.desktop
+application/vnd.oasis.opendocument.text=libreoffice-writer.desktop
+application/vnd.openxmlformats-officedocument.spreadsheetml.sheet=libreoffice-calc.desktop
+application/vnd.ms-excel=libreoffice-calc.desktop
+application/vnd.oasis.opendocument.spreadsheet=libreoffice-calc.desktop
+application/vnd.openxmlformats-officedocument.presentationml.presentation=libreoffice-impress.desktop
+application/vnd.ms-powerpoint=libreoffice-impress.desktop
+application/vnd.oasis.opendocument.presentation=libreoffice-impress.desktop
+
+# Windows Compatibility
+application/x-msdownload=wine.desktop
+
+# Torrent & Magnet
+x-scheme-handler/magnet=org.qbittorrent.qBittorrent.desktop
+application/x-bittorrent=org.qbittorrent.qBittorrent.desktop
+
+# Mail & Messaging & AI
+x-scheme-handler/mailto=org.mozilla.Thunderbird.desktop
+x-scheme-handler/tg=org.telegram.desktop.desktop
+x-scheme-handler/codex=chatgpt.desktop
