@@ -1,4 +1,6 @@
 abbr paclean 'sudo pacman -Rns (pacman -Qdtq)'
 abbr tsu 'sudo tailscale up'
 abbr tsd 'sudo tailscale down'
-abbr asciiquarium 'asciiquarium -t'
+abbr aquarium 'asciiquarium -t'
+abbr clock 'clock-rs'
+abbr matrix 'rmatrix'
