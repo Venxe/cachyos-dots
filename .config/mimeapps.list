@@ -34,12 +34,11 @@ image/x-sony-arw=swayimg.desktop
 video/mp4=mpv.desktop
 video/matroska=mpv.desktop
 video/webm=mpv.desktop
-video/quicktime=mpv.desktop
-video/vnd.avi=mpv.desktop
 audio/mpeg=io.bassi.Amberol.desktop
 audio/flac=io.bassi.Amberol.desktop
+audio/mp4=io.bassi.Amberol.desktop
+audio/aac=io.bassi.Amberol.desktop
 audio/ogg=io.bassi.Amberol.desktop
-audio/vnd.wave=io.bassi.Amberol.desktop
 
 # Archives
 application/zip=xarchiver.desktop
