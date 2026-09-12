@@ -26,6 +26,7 @@ image/webp=swayimg.desktop
 image/svg+xml=swayimg.desktop
 image/bmp=swayimg.desktop
 image/avif=swayimg.desktop
+image/x-sony-arw=org.darktable.darktable.desktop
 
 # Audio & Video
 video/mp4=mpv.desktop
@@ -45,6 +46,8 @@ application/x-tar=xarchiver.desktop
 application/x-compressed-tar=xarchiver.desktop
 application/x-bzip2-compressed-tar=xarchiver.desktop
 application/x-xz-compressed-tar=xarchiver.desktop
+application/x-zstd-compressed-tar=xarchiver.desktop
+application/zstd=xarchiver.desktop
 application/vnd.rar=xarchiver.desktop
 
 # Office Documents
@@ -69,3 +72,13 @@ application/x-bittorrent=org.qbittorrent.qBittorrent.desktop
 x-scheme-handler/mailto=org.mozilla.Thunderbird.desktop
 x-scheme-handler/tg=org.telegram.desktop.desktop
 x-scheme-handler/codex=chatgpt.desktop
+
+[Added Associations]
+text/markdown=dev.zed.Zed.desktop;
+text/x-markdown=dev.zed.Zed.desktop;
+text/csv=libreoffice-calc.desktop;
+text/html=firefox.desktop;
+application/json=firefox.desktop;
+application/pdf=libreoffice-draw.desktop;
+image/png=swappy.desktop;
+image/jpeg=swappy.desktop;org.darktable.darktable.desktop;
