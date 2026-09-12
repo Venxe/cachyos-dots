@@ -6,6 +6,9 @@ swayimg.exif_orientation = true
 swayimg.viewer.default_scale = "optimal"
 swayimg.viewer.default_position = "center"
 
+-- Image List: Automatically add neighboring files in same folder for easy browsing
+swayimg.imagelist.adjacent = true
+
 -- Text Overlay (OSD): Hidden by default, 14px when toggled
 swayimg.text.visible = false
 swayimg.text.size = 14
@@ -19,6 +22,19 @@ swayimg.format_conf = {
     camera_wb = true
   }
 }
+
+-- Navigation: Left/Right arrows and Space to browse next/prev image
+swayimg.viewer.on_key("right", function()
+  swayimg.viewer.open("next")
+end)
+
+swayimg.viewer.on_key("left", function()
+  swayimg.viewer.open("prev")
+end)
+
+swayimg.viewer.on_key("space", function()
+  swayimg.viewer.open("next")
+end)
 
 -- Toggle text overlay with 't'
 swayimg.viewer.on_key("t", function()
