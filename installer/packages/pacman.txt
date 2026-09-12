@@ -19,6 +19,7 @@ lazydocker
 libgsf
 libreoffice-fresh
 localsend
+lolcat
 lsp-plugins
 lutris
 mangohud
