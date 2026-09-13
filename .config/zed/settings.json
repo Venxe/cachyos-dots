@@ -1,0 +1,43 @@
+{
+  "cli_default_open_behavior": "existing_window",
+  "theme": "Caelestia",
+  "icon_theme": "Catppuccin Latte",
+  "auto_install_extensions": {
+    "catppuccin-icons": true,
+    "mcp-server-context7": true,
+    "postgres-context-server": true,
+    "mcp-server-playwright": true
+  },
+  "telemetry": {
+    "diagnostics": false,
+    "metrics": false,
+    "anthropic_retention": false
+  },
+  "context_servers": {
+    "mcp-server-context7": {
+      "enabled": true,
+      "remote": false,
+      "settings": {
+        "context7_api_key": "YOUR_CONTEXT7_API_KEY"
+      }
+    },
+    "postgres-context-server": {
+      "enabled": true,
+      "remote": false,
+      "settings": {
+        "database_url": "postgresql://myuser:mypassword@localhost:5432/mydatabase"
+      }
+    },
+    "context-mode": {
+      "command": "context-mode",
+      "args": [],
+      "env": {}
+    },
+    "codebase-memory-mcp": {
+      "command": "codebase-memory-mcp",
+      "args": [
+        ""
+      ]
+    }
+  }
+}
