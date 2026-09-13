@@ -111,6 +111,11 @@ execute_subscripts() {
         info "-> Patching Caelestia theme engine to persist 'kora' icons..."
         bash "$SCRIPTS_DIR/caelestia-icons.sh"
     fi
+
+    if [[ -f "$SCRIPTS_DIR/mcp-servers.sh" ]]; then
+        info "-> Installing external MCP servers (context-mode, codebase-memory)..."
+        bash "$SCRIPTS_DIR/mcp-servers.sh"
+    fi
 }
 
 enable_services() {
