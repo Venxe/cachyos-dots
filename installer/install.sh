@@ -78,7 +78,11 @@ apply_agent_configurations() {
     for dir in "${agent_dirs[@]}"; do
         if [[ -d "$DIR/$dir" ]]; then
             info "-> Copying $dir configuration files (~/$dir)..."
-            rsync -aK "$DIR/$dir/" "$HOME/$dir/"
+            if [[ -f "$HOME/$dir/config/mcp_config.json" ]]; then
+                rsync -aK --exclude="config/mcp_config.json" "$DIR/$dir/" "$HOME/$dir/"
+            else
+                rsync -aK "$DIR/$dir/" "$HOME/$dir/"
+            fi
             success "$dir configuration successfully copied."
         fi
     done
