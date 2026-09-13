@@ -46,7 +46,11 @@ install_packages() {
 
 apply_configurations() {
     info "Copying user configuration files (~/.config)..."
-    rsync -aK "$DIR/.config/" "$HOME/.config/"
+    if [[ -f "$HOME/.config/zed/settings.json" ]]; then
+        rsync -aK --exclude="zed/settings.json" "$DIR/.config/" "$HOME/.config/"
+    else
+        rsync -aK "$DIR/.config/" "$HOME/.config/"
+    fi
     success "User configurations successfully copied."
 
     info "Copying system configuration files (/etc)..."
