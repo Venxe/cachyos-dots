@@ -71,6 +71,19 @@ apply_configurations() {
     sudo hwclock --systohc --localtime
 }
 
+apply_agent_configurations() {
+    info "Copying AI agent configuration files (.codex, .gemini)..."
+    local agent_dirs=(".codex" ".gemini")
+
+    for dir in "${agent_dirs[@]}"; do
+        if [[ -d "$DIR/$dir" ]]; then
+            info "-> Copying $dir configuration files (~/$dir)..."
+            rsync -aK "$DIR/$dir/" "$HOME/$dir/"
+            success "$dir configuration successfully copied."
+        fi
+    done
+}
+
 execute_subscripts() {
     info "Executing custom configuration scripts..."
     
@@ -129,6 +142,7 @@ main() {
     check_privileges
     install_packages
     apply_configurations
+    apply_agent_configurations
     execute_subscripts
     enable_services
     

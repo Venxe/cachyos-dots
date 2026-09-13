@@ -1,0 +1,19 @@
+{
+  "mcpServers": {
+    "context7": {
+      "serverUrl": "https://mcp.context7.com/mcp",
+      "headers": {
+        "Authorization": "YOUR_CONTEXT7_API_KEY"
+      }
+    },
+    "codebase-memory": {
+      "command": "codebase-memory-mcp",
+      "args": []
+    },
+    "context-mode": {
+      "command": "context-mode",
+      "args": [],
+      "env": {}
+    }
+  }
+}
