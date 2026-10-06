@@ -4,7 +4,8 @@ clear
 
 source "$(dirname "${BASH_SOURCE[0]}")/utils.sh"
 
-readonly DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
+readonly DIR
 readonly PACKAGES_DIR="$DIR/installer/packages"
 readonly SCRIPTS_DIR="$DIR/installer"
 
@@ -78,6 +79,7 @@ apply_configurations() {
 apply_agent_configurations() {
     info "Copying AI agent configuration files (.codex, .gemini)..."
     local agent_dirs=(".codex" ".gemini")
+    local dir
 
     for dir in "${agent_dirs[@]}"; do
         if [[ -d "$DIR/$dir" ]]; then
@@ -92,51 +94,29 @@ apply_agent_configurations() {
     done
 }
 
+run_script() {
+    local script="$SCRIPTS_DIR/$1" privilege="$2" message="$3"
+    [[ -f "$script" ]] || return 0
+
+    info "-> $message"
+    if [[ "$privilege" == "root" ]]; then
+        sudo bash "$script"
+    else
+        bash "$script"
+    fi
+}
+
 execute_subscripts() {
     info "Executing custom configuration scripts..."
-    
 
-    if [[ -f "$SCRIPTS_DIR/snapper.sh" ]]; then
-        info "-> Configuring Snapper snapshot limits..."
-        sudo bash "$SCRIPTS_DIR/snapper.sh"
-    fi
-
-    if [[ -f "$SCRIPTS_DIR/libvirt.sh" ]]; then
-        info "-> Configuring Libvirt..."
-        sudo bash "$SCRIPTS_DIR/libvirt.sh"
-    fi
-
-    if [[ -f "$SCRIPTS_DIR/limine-resolution.sh" ]]; then
-        info "-> Setting Limine bootloader resolution..."
-        sudo bash "$SCRIPTS_DIR/limine-resolution.sh"
-    fi
-
-
-    if [[ -f "$SCRIPTS_DIR/betterfox.sh" ]]; then
-        info "-> Installing BetterFox user.js..."
-        bash "$SCRIPTS_DIR/betterfox.sh"
-    fi
-
-    if [[ -f "$SCRIPTS_DIR/equibop.sh" ]]; then
-        info "-> Patching Equibop transparency settings..."
-        bash "$SCRIPTS_DIR/equibop.sh"
-    fi
-
-
-    if [[ -f "$SCRIPTS_DIR/desktop-entries.sh" ]]; then
-        info "-> Patching desktop entries..."
-        sudo bash "$SCRIPTS_DIR/desktop-entries.sh"
-    fi
-
-    if [[ -f "$SCRIPTS_DIR/caelestia-icons.sh" ]]; then
-        info "-> Patching Caelestia theme engine to persist 'kora' icons..."
-        bash "$SCRIPTS_DIR/caelestia-icons.sh"
-    fi
-
-    if [[ -f "$SCRIPTS_DIR/mcp-servers.sh" ]]; then
-        info "-> Installing external MCP servers (context-mode, codebase-memory)..."
-        bash "$SCRIPTS_DIR/mcp-servers.sh"
-    fi
+    run_script "snapper.sh" root "Configuring Snapper snapshot limits..."
+    run_script "libvirt.sh" root "Configuring Libvirt..."
+    run_script "limine-resolution.sh" root "Setting Limine bootloader resolution..."
+    run_script "betterfox.sh" user "Installing BetterFox user.js..."
+    run_script "equibop.sh" user "Patching Equibop transparency settings..."
+    run_script "desktop-entries.sh" root "Patching desktop entries..."
+    run_script "caelestia-theme.sh" user "Applying Caelestia icon themes and postHook..."
+    run_script "mcp-servers.sh" user "Installing external MCP servers (context-mode, codebase-memory)..."
 }
 
 enable_services() {
