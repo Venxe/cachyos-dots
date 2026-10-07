@@ -37,7 +37,6 @@ install_packages() {
     xargs -a "$PACKAGES_DIR/pacman.txt" -r sudo pacman -S --needed
 
     info "2/3 - Installing AUR packages (yay)..."
-    command -v yay >/dev/null 2>&1 || error "Yay is required but not installed!"
     xargs -a "$PACKAGES_DIR/yay.txt" -r yay -S --needed
 
     info "3/3 - Installing Flatpak packages..."
@@ -133,11 +132,11 @@ main() {
     apply_agent_configurations
     execute_subscripts
     enable_services
-    
+
     info "Cleaning up installation directory..."
-    cd "$HOME" || true
-    rm -rf "$DIR"
-    
+    cd "$HOME"
+    rm -rf -- "$DIR"
+
     success "Installation completed successfully!"
     echo -e "${YELLOW}It is recommended to reboot your computer for the changes to take full effect.${NC}"
 }

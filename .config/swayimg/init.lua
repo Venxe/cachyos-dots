@@ -89,23 +89,35 @@ swayimg.viewer.on_key({ "Shift+r", "R" }, function() swayimg.viewer.rotate(270) 
 -- Trash & Undo
 local trash_history = {}
 
+local function shell_quote(value)
+  return "'" .. value:gsub("'", "'\\''") .. "'"
+end
+
 local function trash_image(img)
   if not img or not img.path then
     return
   end
   local path = img.path
+  if not os.execute("gio trash -- " .. shell_quote(path)) then
+    swayimg.text.status = "Could not move image to trash."
+    return
+  end
   table.insert(trash_history, path)
-  os.execute(string.format("gio trash %q", path))
   swayimg.imagelist.remove(path)
 end
 
 local function restore_trashed_image()
-  local path = table.remove(trash_history)
+  local path = trash_history[#trash_history]
   if not path then
     return
   end
-  local cmd = string.format('TARGET=%q; URI=$(gio trash --list | awk -F\'\\t\' -v p="$TARGET" \'$2 == p { uri = $1 } END { if (uri) print uri }\'); [ -n "$URI" ] && gio trash --restore "$URI"', path)
-  os.execute(cmd)
+  local cmd = "export TARGET=" .. shell_quote(path)
+    .. "; LIST=$(gio trash --list) && URI=$(printf '%s\\n' \"$LIST\" | awk -F '\\t' '$2 == ENVIRON[\"TARGET\"] { uri = $1 } END { if (uri) print uri }') && [ -n \"$URI\" ] && gio trash --restore \"$URI\""
+  if not os.execute(cmd) then
+    swayimg.text.status = "Could not restore image from trash."
+    return
+  end
+  table.remove(trash_history)
 
   if swayimg.mode == "viewer" then
     swayimg.viewer.open_path(path)
@@ -130,7 +142,7 @@ swayimg.gallery.on_key("t", toggle_osd)
 -- Edit in Swappy
 local function edit_in_swappy(img)
   if img and img.path then
-    os.execute(string.format("swappy -f %q &", img.path))
+    os.execute("swappy -f " .. shell_quote(img.path) .. " &")
   end
 end
 swayimg.viewer.on_key("e", function() edit_in_swappy(swayimg.viewer.get_image()) end)

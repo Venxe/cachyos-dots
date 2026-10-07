@@ -10,6 +10,8 @@ The installation process is fully automated and specifically tailored to my pers
 
 🖥️ **Display Manager:** SDDM
 
+🥾 **Bootloader:** Limine (`/boot/limine.conf`)
+
 > [!WARNING]
 > Running this setup may install software and configurations that could conflict with your preferences. You may want to review the [packages](installer/packages) before proceeding.
 

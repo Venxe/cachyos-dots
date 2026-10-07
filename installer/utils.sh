@@ -14,4 +14,4 @@ readonly NC='\033[0m'
 # --- HELPER FUNCTIONS ---
 info() { echo -e "${BLUE}[INFO]${NC} $1"; }
 success() { echo -e "${GREEN}[SUCCESS]${NC} $1"; }
-error() { echo -e "${RED}[ERROR]${NC} $1"; exit 1; }
+error() { echo -e "${RED}[ERROR]${NC} $1" >&2; exit 1; }

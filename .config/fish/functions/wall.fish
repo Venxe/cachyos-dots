@@ -1,6 +1,9 @@
 function wall -d "Toggle linux-wallpaperengine on/off"
     if pgrep -x linux-wallpaper > /dev/null 2>&1
-        killall linux-wallpaperengine > /dev/null 2>&1
+        if not killall linux-wallpaperengine > /dev/null 2>&1
+            echo "Could not stop Wallpaper Engine." >&2
+            return 1
+        end
         echo "Wallpaper Engine stopped."
     else
         set config_file "$HOME/.config/Linux Wallpaper Engine/active-wallpapers.json"
@@ -20,14 +23,14 @@ function wall -d "Toggle linux-wallpaperengine on/off"
         set cmd_args
 
         for screen in $screens
-            set bg_id (jq -r ".activeWallpapers[\"$screen\"].backgroundId" "$config_file")
-            set scaling (jq -r ".activeWallpapers[\"$screen\"].scaling // \"fill\"" "$config_file")
-            set fps (jq -r ".activeWallpapers[\"$screen\"].fps // 60" "$config_file")
-            set silent (jq -r ".activeWallpapers[\"$screen\"].silent // true" "$config_file")
-            set no_audio (jq -r ".activeWallpapers[\"$screen\"].noAudioProcessing // false" "$config_file")
-            set disable_mouse (jq -r ".activeWallpapers[\"$screen\"].disableMouse // false" "$config_file")
-            set disable_parallax (jq -r ".activeWallpapers[\"$screen\"].disableParallax // true" "$config_file")
-            set disable_particles (jq -r ".activeWallpapers[\"$screen\"].disableParticles // false" "$config_file")
+            set bg_id (jq -r --arg screen "$screen" '.activeWallpapers[$screen].backgroundId' "$config_file")
+            set scaling (jq -r --arg screen "$screen" '.activeWallpapers[$screen].scaling // "fill"' "$config_file")
+            set fps (jq -r --arg screen "$screen" '.activeWallpapers[$screen].fps // 60' "$config_file")
+            set silent (jq -r --arg screen "$screen" '.activeWallpapers[$screen].silent // true' "$config_file")
+            set no_audio (jq -r --arg screen "$screen" '.activeWallpapers[$screen].noAudioProcessing // false' "$config_file")
+            set disable_mouse (jq -r --arg screen "$screen" '.activeWallpapers[$screen].disableMouse // false' "$config_file")
+            set disable_parallax (jq -r --arg screen "$screen" '.activeWallpapers[$screen].disableParallax // true' "$config_file")
+            set disable_particles (jq -r --arg screen "$screen" '.activeWallpapers[$screen].disableParticles // false' "$config_file")
 
             set cmd_args $cmd_args --screen-root $screen --bg $bg_id --scaling $scaling --fps $fps
 
@@ -46,7 +49,10 @@ function wall -d "Toggle linux-wallpaperengine on/off"
             set cmd_args $cmd_args --assets-dir $assets_dir
         end
 
-        systemd-run --user --quiet linux-wallpaperengine $cmd_args
+        if not systemd-run --user --quiet linux-wallpaperengine $cmd_args
+            echo "Could not start Wallpaper Engine." >&2
+            return 1
+        end
         echo "Wallpaper Engine started."
     end
 end
