@@ -50,7 +50,7 @@ main() {
     [[ -s "$temp_file" ]] || error "BetterFox download is empty. Existing user.js was preserved."
 
     if ! grep -q 'toolkit.legacyUserProfileCustomizations.stylesheets' "$temp_file"; then
-        printf '\n// Caelestia: Required for userChrome.css\n%s\n' "$CAELESTIA_PREF" >> "$temp_file"
+        printf '\n// Enable userChrome.css for the Caelestia theme.\n%s\n' "$CAELESTIA_PREF" >> "$temp_file"
     fi
     mv -- "$temp_file" "$target"
     trap - EXIT

@@ -1,5 +1,4 @@
 // from https://github.com/hyprwm/Hyprland/issues/1140#issuecomment-1614863627
-// Custom: VIB_VIBRANCE increased from 0.15 → 0.35
 
 #version 300 es
 precision highp float;

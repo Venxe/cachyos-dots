@@ -1,6 +1,4 @@
--- Swayimg configuration
-
--- Rendering & display
+-- Rendering & Display
 swayimg.antialiasing = true
 swayimg.exif_orientation = true
 swayimg.viewer.default_scale = "optimal"
@@ -10,17 +8,17 @@ swayimg.viewer.history = 2
 swayimg.viewer.set_window_background(0x00000000)
 swayimg.gallery.window_color = 0x00000000
 
--- Image list
+-- Image List
 swayimg.imagelist.adjacent = true
 swayimg.imagelist.fsmon = true
 
--- OSD
+-- Text Overlay
 swayimg.text.visible = false
 swayimg.text.size = 14
 swayimg.text.font = "sans-serif"
 swayimg.text.padding = 8
 
--- RAW support
+-- RAW Support
 swayimg.format_conf = {
   raw = {
     enable = true,
@@ -47,7 +45,7 @@ swayimg.viewer.on_key("left", function() navigate("prev") end)
 swayimg.viewer.on_mouse("ScrollDown", function() navigate("next") end)
 swayimg.viewer.on_mouse("ScrollUp", function() navigate("prev") end)
 
--- Zoom toggle on double click
+-- Double-Click Zoom
 local click_pending = false
 local base_scale = nil
 

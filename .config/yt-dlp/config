@@ -1,5 +1,3 @@
-# Default download directory
 --paths ~/Downloads
 
-# SponsorBlock: automatically remove sponsor and promo segments
 --sponsorblock-remove default
